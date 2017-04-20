@@ -1,0 +1,21 @@
+.container-fluid
+  .row
+    .col-sm-4.col-md-4.col-sm-offset-4.col-md-offset-4
+      %hr
+      %p Edit record (#{@pi.id})
+      %br
+      = simple_form_for @pi, url: programs_information_path do |f|
+        = f.input :program_type
+        = f.input :program_name, label: 'Program Name'
+        = f.input :address
+        = f.input :state
+        = f.simple_fields_for :coordinator_information do |c|
+          = c.input :first_name, label: 'Coordinator First name'
+          = c.input :last_name, label: 'Coordinator Last name'
+          = c.input :email
+          = c.input :phone
+        = f.input :website
+        = f.button :submit, class: "btn-primary", class: "btn-primary btn-width", data: { disable_with: "Updating..."}
+        %br
+        %br
+        = link_to "Cancel", root_path, class: "btn btn-default btn-width"

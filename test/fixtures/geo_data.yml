@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  data: 
+  lat: 1.5
+  lng: 1.5
+  marker: MyString
+
+two:
+  data: 
+  lat: 1.5
+  lng: 1.5
+  marker: MyString

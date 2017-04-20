@@ -1,0 +1,85 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require font-awesome
+ */
+@import "bootstrap";
+@import "font-awesome";
+
+.state-filter {
+  min-height: 800px;
+}
+
+.modal-title {
+  text-align: center;
+  font-family: serif;
+}
+
+#user_email {
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-family: serif;
+}
+
+#user_password {
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-family: serif;
+}
+
+.login {
+  width: 100%;
+  border-radius: 5px;
+  background: #9c6;
+  font-family: serif;
+}
+
+.table-condensed{
+  font-size: 10px;
+}
+
+.btn-width {
+  width: 100%
+}
+
+.my-nav-menu {
+  //background-color: rgba(51, 122, 183, 0.29);
+}
+
+@media (max-width: 1024px) {
+  .pagination .page.away-7 { display: none; }
+  .pagination .page.away-6 { display: none; }
+}
+
+@media (max-width: 900px) {
+  .pagination .page.away-5 { display: none; }
+}
+@media (max-width: 825px) {
+  .pagination .page.away-4 { display: none; }
+}
+@media (max-width: 750px) {
+  .pagination .page.away-3 { display: none; }
+  .pagination .page.away-2 { display: none; }
+}
+@media (max-width: 400px) {
+  .pagination .disabled { display: none; }
+  .pagination { font-size: 10px; }
+}
+@media (max-width: 370px) {
+  .pagination .page.away-1 { display: none; }
+}

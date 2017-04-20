@@ -1,0 +1,13 @@
+<%= 
+    [
+      ['State', res.state],
+      ['County', res.county],
+      ['Court Type', res.program_type],
+      ['Program Name', res.program_name],
+      ['Address', res.address],
+      ['Coordinator Name', res.contact_name],
+      ['Contact Email', res.email],
+      ['Contact Phone', res.phone_number],
+      ['Website', res.website]
+    ].map{|i| i.join(': ')}.join('<br />').html_safe
+%>

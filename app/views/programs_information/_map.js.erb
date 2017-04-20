@@ -1,0 +1,164 @@
+$(function() {
+
+  function prepareUrlParams(areas) {
+    currentParams = window.location.search
+    requiredParams = ''
+    if (currentParams[0] == '?') {
+      requiredParams += currentParams + '&'
+    } else {
+      requiredParams += '?'
+    }
+    parametrized_visible_areas = []
+    if (areas.length != 0) {
+      $.each(areas, function( index, area ) {
+        parametrized_visible_areas.push('z[]='+ area)
+      });
+    } else {
+      parametrized_visible_areas = ['z[]=none']
+    }
+    return 'programs_information.js' + requiredParams + parametrized_visible_areas.join('&')
+  }
+
+  function getCurrentState(event) {
+    var map = event.target
+    var current_zoom = map.getZoom();
+    var the_function = getCurrentState;
+
+    $('#map-zoom').html(current_zoom);
+    visible_areas = []
+    visible_markers = []
+
+    map.eachLayer(function (layer) {
+      if ((layer instanceof L.Marker) && ( map.getBounds().contains(layer.getLatLng()) )) {
+        if ( !layer.options.isLocation && layer.options.zipCode ){
+          if (typeof(layer.options.zipCode) != 'undefined') {
+            visible_areas.push(layer.options.zipCode)
+          }
+        } else {
+          if (typeof(layer.options.zipCodeAbbrev) != 'undefined') {
+            visible_markers.push(layer.options.zipCodeAbbrev)
+          } else {
+            if ( typeof(layer._markers) != 'undefined' && layer._markers instanceof Array ) {
+              $.each(layer._markers, function( index, marker ) {
+                if (typeof(marker.options.zipCodeAbbrev) != 'undefined') {
+                  visible_markers.push(marker.options.zipCodeAbbrev)
+                }
+              });
+            }
+          }
+        }
+      }
+    });
+    $('#visible-locations').html(visible_areas.join(' '));
+    if (visible_areas.length != 0) {
+      currentURL = prepareUrlParams(visible_areas)
+    } else {
+      currentURL = prepareUrlParams(visible_markers)
+    }
+    $.get(currentURL, function() {
+      map.eachLayer(function (layer) {
+        if ((layer instanceof L.Marker) || (layer instanceof L.MarkerClusterGroup) || (layer instanceof L.FeatureGroup)) {
+          layer.clearAllEventListeners();
+          map.removeLayer(layer);
+        }
+      });
+      var bounds = map.getBounds();
+      var markers = L.markerClusterGroup();
+      $.each(marker_locations, function( index, marker ) {
+        markers.addLayer(
+          L.marker(
+            [marker[0], marker[1]],
+            {
+              isLocation: true,
+              zipCodeAbbrev: marker[3]
+            }
+          ).bindPopup(marker[2])
+        );
+      });
+      map.addLayer(markers);
+
+      var fancy_marker = L.icon({iconUrl: 'zip_marker.png'});
+      $.each(invisible_marker_locations, function( index, marker ) {
+         map.addLayer(
+          L.marker(
+            [marker[0], marker[1]], 
+            { icon: fancy_marker,
+              zipCode: marker[2],
+              isLocation: false
+            }
+          )
+        );
+      });
+
+      if (render_center_user_location) {
+        var star_marker = L.icon({iconUrl: 'star.png'});
+        var star =  L.marker(
+          [user_location.lat, user_location.lng], 
+          { icon: star_marker }
+        )
+        map.addLayer(star);
+      }
+
+      map.on('zoomend', the_function);
+      map.on('moveend', the_function);
+      $('#visible-markers').html(marker_locations.length);
+    }.bind(this))
+
+    map.off('zoomend', getCurrentState);
+    map.off('moveend', getCurrentState);
+  }
+
+  var map = L.map('map', {maxZoom: 14}).setView([39.50, -98.35], 4);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attributionControl: false }).addTo(map);
+  var markers = L.markerClusterGroup();
+  var group = new L.featureGroup();
+  <% @all_results.each do |res|  %>
+    <% if res.lat && res.long  %>
+      m<%= res.id %> = L.marker(
+        [<%= res.lat %>, <%= res.long %>],
+        {
+          isLocation: true,
+          zipCodeAbbrev: <%= res.zip_code %>
+        }
+      ).bindPopup('<%=escape_javascript(render(partial: 'popup_text', locals: { res: res }))%>');
+      markers.addLayer(m<%= res.id %>);
+      group.addLayer(m<%= res.id %>); 
+    <% end %>
+  <% end %>
+  var fancy_marker = L.icon({iconUrl: 'zip_marker.png'});
+  var star_marker = L.icon({iconUrl: 'star.png'});
+
+  <% if @center %>
+   var center =  L.marker(
+        [<%= @center[:lat] %>, <%= @center[:lng] %>], 
+        { icon: star_marker }
+      )
+    map.addLayer(center);
+    group.addLayer(center); 
+  <% end %>
+  map.addLayer(markers);
+  map.fitBounds(group.getBounds());
+  $('.leaflet-control-attribution').hide()
+
+  //render invizible markers for positioning
+  <% SearchItem.search('*', load: false).each do |si| %>
+    <% if si.lat && si.lng  %>
+      map.addLayer(
+        L.marker(
+          [<%= si.lat %>, <%= si.lng %>], 
+          { icon: fancy_marker,
+            zipCode: '<%= si.short_name %>',
+            isLocation: false
+          }
+        )
+      );
+    <% end %>
+  <% end %>
+$('#current-search').html('<%= escape_javascript(@conditions.to_json) %>')
+$('#current-conditions').html('<%= escape_javascript(@search.to_s) %>')
+  //add event listeners to the map
+  setTimeout(function(){ 
+    map.on('zoomend', getCurrentState);
+    map.on('moveend', getCurrentState); 
+  }, 1000)
+});

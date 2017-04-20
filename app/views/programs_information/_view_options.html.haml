@@ -1,0 +1,18 @@
+%button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+  = view_option_title
+  %span.caret
+%ul.dropdown-menu
+  %li.dropdown-header View Options
+  %li
+    = link_to_view_option('Map', ['Map'])
+  %li
+    = link_to_view_option('List', ['List']) 
+  %li
+    = link_to_view_option('Map & List', ['Map', 'List']) 
+  %li.divider
+  %li.dropdown-header Filter by State
+  %li
+    = link_to_state_option('All States', nil)
+  -  ProgramInformation.pluck(:state).uniq.sort.each do |state|
+    %li
+      = link_to_state_option(state, [state])

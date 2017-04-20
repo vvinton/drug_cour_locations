@@ -1,0 +1,2 @@
+class StateCoordinator < ApplicationRecord
+end

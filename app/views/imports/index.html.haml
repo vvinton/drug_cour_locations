@@ -1,0 +1,10 @@
+%hr
+.col-md-3.col-sm-43col-md-offset-4.col-sm-offset-4
+  .well
+    %p Upload MDB file
+    = simple_form_for Import.new do |f|
+      = f.input :mdb, label: false
+      = f.submit 'Import', class: "btn btn-success btn-width"
+      %br
+      %br
+      = link_to "Cancel", root_path, class: "btn btn-default btn-width"

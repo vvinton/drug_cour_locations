@@ -1,0 +1,23 @@
+.row
+  = link_to 'Reset Filters', programs_information_index_path, class: "btn btn-default", role: "button"
+.row
+  %br
+  %p Court Type
+  %ul.list-unstyled
+    - @results.aggs["program_type"]["buckets"].each do |result|
+      %li
+        = link_to_facet(:t, result['key'], result['doc_count'], true)
+    - (@conditions[:program_type] || []).each do |pi|
+      - unless @results.aggs["program_type"]["buckets"].map{|r| r['key']}.include?(pi)
+        %li
+          = link_to_facet(:t, pi, 0, true)
+  %p States
+  %ul.list-unstyled
+    - @results.aggs["state"]["buckets"].each do |result|
+      %li
+        = link_to_facet(:s, result['key'], result['doc_count'], true)
+    - (@conditions[:state] || []).each do |state|
+      - unless @results.aggs["state"]["buckets"].map{|r| r['key']}.include?(state)
+        %li
+          = link_to_facet(:s, state, 0, true)
+  %br

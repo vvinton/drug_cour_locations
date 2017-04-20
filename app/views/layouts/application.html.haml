@@ -1,0 +1,51 @@
+!!!
+%html{lang: "en"}
+  %head
+    %meta{charset: "utf-8"}
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
+    %title= "DrugCourtLocation"
+    %link{href: "https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700|Merriweather:400,700,900", rel: "stylesheet", type: "text/css"}
+
+    %link{href: "https://unpkg.com/leaflet@1.0.3/dist/leaflet.css", rel: "stylesheet"}
+    %link{href: "https://unpkg.com/leaflet.markercluster@1.0.4/dist/MarkerCluster.css", rel: "stylesheet"}
+    %link{href: "https://unpkg.com/leaflet.markercluster@1.0.4/dist/MarkerCluster.Default.css", rel: "stylesheet"}
+    %script{src: "https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"}
+    %script{src: "https://unpkg.com/leaflet.markercluster@1.0.4/dist/leaflet.markercluster.js"}
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag    'application', media: 'all'
+    = csrf_meta_tags
+  %body
+    #debug{style: "display: none;"}
+      map zoom
+      #map-zoom
+        4
+      visible regions
+      #visible-locations
+        all
+      visible markers
+      #visible-markers
+      #current-search
+      #current-conditions
+    .container
+      .row
+        .h1 Drug Court Locations
+        - if current_user
+          .collapse.navbar-collapse.my-nav-menu
+            %ul.nav.navbar-nav.navbar-right
+              %li.dropdown
+                %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                  #{current_user.email}
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    %a{:href => "/"} Home
+                  %li
+                    %a{:href => "/statistic"} DB Statistic
+                  %li
+                    %a{:href => "/imports"} Upload MDB
+                  %li
+                    = link_to "Logout", destroy_user_session_path, "method"=>"delete"
+      %br
+      = yield
+    %script
+      = yield :javascript
