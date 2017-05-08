@@ -6,9 +6,6 @@
       %th Court Type
       %th Program Name
       %th Address
-      %th Coordinator Name
-      %th Contact Email
-      %th Contact Phone
       %th Website
       - if current_user && current_user.role.name == 'admin'
         %th Edit
@@ -20,9 +17,6 @@
         %td= result.program_type
         %td= result.program_name
         %td= result.address
-        %td= result.contact_name
-        %td= result.email
-        %td= result.phone_number
         %td= result.website
         - if current_user && current_user.role.name == 'admin'
           %th
