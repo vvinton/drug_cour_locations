@@ -1,0 +1,11 @@
+export BONSAI_URL=https://36z7vtbk:zrb7964b8b6dt2wj@redwood-8193574.us-east-1.bonsaisearch.net
+export DATABASE_URL=postgres://yjpknbdcaxybxn:bd9a24e1b594d5a5d6d0791f4db06893117795f78916fb03250d129030a4cb2b@ec2-107-20-250-195.compute-1.amazonaws.com:5432/d6oj96obfmo2s6
+export ELASTICSEARCH_URL=https://36z7vtbk:zrb7964b8b6dt2wj@redwood-8193574.us-east-1.bonsaisearch.net
+export LANG=en_US.UTF-8
+export RACK_ENV=production
+export RAILS_ENV=production
+export RAILS_LOG_TO_STDOUT=enabled
+export RAILS_SERVE_STATIC_FILES=enabled
+export REDIS_PROVIDER=REDISTOGO_URL
+export REDISTOGO_URL=redis://redistogo:389b931f0900b61f81f032a892dde4e8@barreleye.redistogo.com:10975/
+export SECRET_KEY_BASE=2a4f32e2bed32a61a62b6eb5b46126e872e1a6e63243fb7b8c6209f85f83e24bb2be00493201ac0b2fdf3c29f0047d231a6883b740099468c0ab3e1a43d1c6cb
