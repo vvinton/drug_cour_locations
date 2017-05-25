@@ -1,3 +1,5 @@
+Searchkick.client = Elasticsearch::Client.new(retry_on_failure: true, transport_options: {request: {timeout: 250}})
+
 PROGRAM_MAPPING = {
     program_information: {
         properties: {

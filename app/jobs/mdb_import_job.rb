@@ -26,6 +26,8 @@ class MdbImportJob < ApplicationJob
       pi.update_location!
       mapping[row[:"ID"]] = pi.id
     end
+
+    # Coordinator Infomration
     CoordinatorInformation.delete_all
     database["Coordinator Information"].each do |row|
       coordinator_info = CoordinatorInformation.new( program_information_id: mapping[row[:"ProgramID"]],
@@ -40,5 +42,23 @@ class MdbImportJob < ApplicationJob
     end
     ProgramInformation.where(lat: nil).delete_all
     ProgramInformation.reindex
+
+    StateCoordinator.delete_all
+    database['State Coordinators'].each do |row|
+      sc_info = StateCoordinator.new(
+          current_contact: row[:"Current Contact?"],
+          last_name: row[:"LastName"],
+          agency: row[:"Agency"],
+          first_name: row[:"FirstName"],
+          email: row[:"E-mail"],
+          title: row[:"Title"],
+          phone: row[:"Phone Number"],
+          website: row[:"Website"],
+          address: row[:"Address"],
+          city: row[:"City"],
+          state: row[:"State"],
+          zip: row[:"Zip"])
+      sc_info.save
+    end
   end
 end

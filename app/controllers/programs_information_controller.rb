@@ -18,16 +18,12 @@ class ProgramsInformationController < ApplicationController
   end
 
   def statistic
-    compose_query
-    @results = ProgramInformation.search(
-      @search.to_s,
-      where: @conditions,
-      aggs: [:program_type, :state],
-      page: params[:page],
-      per_page: 10,
-      load: false
-    )
-    @all_results = ProgramInformation.search(@search.to_s, where: @conditions, load: false)
+    results = ProgramByStateCounts.metrics
+    @total = results[:total]
+    @counts = results[:counts]
+    @program_types = results[:program_types]
+    @states = results[:total].keys.sort
+    binding.pry
   end
 
   def nearbys
@@ -71,7 +67,7 @@ class ProgramsInformationController < ApplicationController
       state_counts[(r.state || '')] += 1
       type_counts[(r.program_type || '')] +=1
     end
-    @filters["program_type"] = type_counts.map{|k,v| {"key" => k,"doc_count" => v} }
+    @filters["program_type"] = type_counts.map{ |k,v| {"key" => k,"doc_count" => v} }
     @filters["state"] = state_counts.map{|k,v| {"key" => k,"doc_count" => v} }
     structure
   end

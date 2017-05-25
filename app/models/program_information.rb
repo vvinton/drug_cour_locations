@@ -1,4 +1,5 @@
 class ProgramInformation < ApplicationRecord
+  include ProgramInformationAggregations
   has_many :judge_informaion
   has_many :jurisdiction_information
   has_many :coordinator_information

@@ -32,10 +32,15 @@ gem "paperclip", "~> 5.0.0"
 gem 'mdb'
 gem 'font-awesome-rails'
 gem 'sucker_punch'
+gem 'slim-rails'
+gem 'pry'
+
+gem 'jquery-datatables-rails', '~> 3.4.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'sqlite3'
+  gem 'pry'
 end
 
 group :development do
@@ -47,4 +52,3 @@ group :development do
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-

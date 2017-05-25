@@ -16,6 +16,7 @@
  */
 @import "bootstrap";
 @import "font-awesome";
+@import "dataTables/extras/dataTables.responsive";
 
 .state-filter {
   min-height: 800px;
@@ -87,4 +88,8 @@
 .container {
   padding-left: 2px;
   padding-right: 2px;
+}
+
+.dataTables_paginate a {
+  margin: 5px;
 }
