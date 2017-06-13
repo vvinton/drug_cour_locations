@@ -3,9 +3,9 @@
   - if @query[:v].include?('Map')
     = render 'map.js'
 .row
-  .col-xs-2.col-sm-2.col-md-2.state-filter
+  .col-xs-3.col-sm-3.col-md-3.state-filter
     = render 'filter_sidebar'
-  .col-xs-10.col-sm-10.col-md-10
+  .col-xs-9.col-sm-9.col-md-9
     .row
       = form_tag programs_information_index_path, method: 'get' do
         - @query.merge(q: []).each do |section, conditions|
