@@ -13,7 +13,15 @@ table.table.table-striped.datatable
         - @program_types.each do |type|
           td = @counts.dig(state, type).to_i
         td = @total[state]
+  tfoot
+    tr
+      tf
+      - @program_types.each do |pt|
+        tf
+      tf
 
 
 javascript:
-  $('.datatable').DataTable({responsive: true});
+  $('.datatable').DataTable({
+    responsive: true
+  });

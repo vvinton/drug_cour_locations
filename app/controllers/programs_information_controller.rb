@@ -23,7 +23,6 @@ class ProgramsInformationController < ApplicationController
     @counts = results[:counts]
     @program_types = results[:program_types]
     @states = results[:total].keys.sort
-    binding.pry
   end
 
   def nearbys
