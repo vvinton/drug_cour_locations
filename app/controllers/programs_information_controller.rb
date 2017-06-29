@@ -14,7 +14,7 @@ class ProgramsInformationController < ApplicationController
       per_page: 10,
       load: false
     )
-    @all_results = ProgramInformation.search(@search.to_s, where: @conditions, load: false)
+    @all_results = ProgramInformation.search(@search.to_s, where: @conditions, load: false, limit: 10_000)
   end
 
   def statistic
