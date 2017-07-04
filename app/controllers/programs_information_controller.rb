@@ -6,6 +6,7 @@ class ProgramsInformationController < ApplicationController
 
   def index
     compose_query
+    set_map_results
     @results = ProgramInformation.search(
       @search.to_s,
       where: @conditions,
@@ -14,7 +15,11 @@ class ProgramsInformationController < ApplicationController
       per_page: 10,
       load: false
     )
-    @all_results = ProgramInformation.search(@search.to_s, where: @conditions, load: false, limit: 10_000)
+  end
+
+  def set_map_results
+    no_zip_conditions = {}
+    @all_results = ProgramInformation.search(@search.to_s, where: no_zip_conditions, load: false, limit: 10_000)
   end
 
   def statistic
