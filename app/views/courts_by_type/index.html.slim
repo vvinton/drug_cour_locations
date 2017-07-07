@@ -5,6 +5,13 @@ table.table.table-striped.datatable
       - @program_types.each do |pt|
         th = pt.titleize
       th Total
+  tfoot
+    tr
+      td Total
+      - @all.values.each do |value|
+        td = value
+      td = @all.values.sum
+
   tbody
     - @states.each do |state|
       - state_counter = 0
@@ -13,15 +20,7 @@ table.table.table-striped.datatable
         - @program_types.each do |type|
           td = @counts.dig(state, type).to_i
         td = @total[state]
-  tfoot
-    tr
-      tf
-      - @program_types.each do |pt|
-        tf
-      tf
 
 
 javascript:
-  $('.datatable').DataTable({
-    responsive: true
-  });
+  $('.datatable').DataTable({responsive: true});
