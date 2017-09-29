@@ -6,11 +6,11 @@
     %title= "DrugCourtLocation"
     %link{href: "https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700|Merriweather:400,700,900", rel: "stylesheet", type: "text/css"}
 
-    %link{href: "https://unpkg.com/leaflet@1.0.3/dist/leaflet.css", rel: "stylesheet"}
-    %link{href: "https://unpkg.com/leaflet.markercluster@1.0.4/dist/MarkerCluster.css", rel: "stylesheet"}
-    %link{href: "https://unpkg.com/leaflet.markercluster@1.0.4/dist/MarkerCluster.Default.css", rel: "stylesheet"}
-    %script{src: "https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"}
-    %script{src: "https://unpkg.com/leaflet.markercluster@1.0.4/dist/leaflet.markercluster.js"}
+    %link{href: "https://unpkg.com/leaflet@1.1.0/dist/leaflet.css", rel: "stylesheet"}
+    %link{href: "https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.css", rel: "stylesheet"}
+    %link{href: "https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.Default.css", rel: "stylesheet"}
+    %script{src: "https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"}
+    %script{src: "https://unpkg.com/leaflet.markercluster@1.0.6/dist/leaflet.markercluster.js"}
     = javascript_include_tag 'application'
     = stylesheet_link_tag    'application', media: 'all'
     = csrf_meta_tags
@@ -26,9 +26,8 @@
       #visible-markers
       #current-search
       #current-conditions
-    .container
+    .container-fluid
       .row
-        .h1 Drug Court Locations
         - if current_user
           .collapse.navbar-collapse.my-nav-menu
             %ul.nav.navbar-nav.navbar-right
@@ -40,7 +39,7 @@
                   %li
                     %a{:href => "/"} Home
                   %li
-                    %a{:href => "/statistic"} DB Statistic
+                    %a{:href => "/statistic"} DB Statistics
                   %li
                     %a{:href => "/imports"} Upload MDB
                   %li

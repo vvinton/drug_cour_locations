@@ -1,13 +1,22 @@
-<%= 
-    [
-      ['State', res.state],
-      ['County', res.county],
-      ['Court Type', res.program_type],
-      ['Program Name', res.program_name],
-      ['Address', res.address],
-      ['Coordinator Name', res.contact_name],
-      ['Contact Email', res.email],
-      ['Contact Phone', res.phone_number],
-      ['Website', res.website]
-    ].map{|i| i.join(': ')}.join('<br />').html_safe
-%>
+<h5>Program Information</h5>
+<ul class='popup-list' id='program-popup-information'>
+  <li>State: <%= res.state %></li>
+  <li>County: <%= res.county %></li>
+  <li>Court Type: <%= res.program_type %></li>
+  <li>Program Name: <%= res.program_name %></li>
+  <%- if res.address %>
+    <li>Address: <%= res.address %></li>
+  <% end -%>
+  <%- if res.website %>
+    <li>Website: <%= link_to res.website, res.website, target: "_blank" %></li>
+  <% end -%>
+</ul>
+<%- if sc %>
+  <h5>Coordinator</h5>
+  <ul class='popup-list' id='coordinator-popup-information'>
+    <li><%= sc['first_name'] %> <%= sc['last_name'] %></li>
+    <li><%= sc['title'] %></li>
+    <li><%= sc['email'] %></li>
+    <li><%= sc['phone'] %></li>
+  </ul>
+<%- end %>

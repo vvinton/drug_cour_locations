@@ -6,7 +6,8 @@ class ProgramsInformationController < ApplicationController
 
   def index
     compose_query
-    @results = ProgramInformation.search(
+    set_map_results
+    @results = ProgramInformation.includes(:state_coordinator).search(
       @search.to_s,
       where: @conditions,
       aggs: [:program_type, :state],
@@ -14,20 +15,29 @@ class ProgramsInformationController < ApplicationController
       per_page: 10,
       load: false
     )
-    @all_results = ProgramInformation.search(@search.to_s, where: @conditions, load: false)
+    states = @results.map{ |x| x.state }.uniq
+    @state_coordinators = {}
+    StateCoordinator.where(state: states).each do |sc|
+      @state_coordinators[sc.state] = sc
+    end
+  end
+
+  def set_map_results
+    no_zip_conditions = {}
+    @all_results = ProgramInformation.search(@search.to_s, where: no_zip_conditions, load: false, limit: 10_000)
+    @all_state_coordinators = {}
+    StateCoordinator.all.each do |sc|
+      @all_state_coordinators[sc.state] = sc.attributes.to_h
+    end
   end
 
   def statistic
-    compose_query
-    @results = ProgramInformation.search(
-      @search.to_s,
-      where: @conditions,
-      aggs: [:program_type, :state],
-      page: params[:page],
-      per_page: 10,
-      load: false
-    )
-    @all_results = ProgramInformation.search(@search.to_s, where: @conditions, load: false)
+    results = ProgramByStateCounts.metrics
+    @total = results[:total]
+    @counts = results[:counts]
+    @program_types = results[:program_types]
+    @states = results[:total].keys.sort
+    @all = results[:all].sort_by{ |k, v| k }.to_h
   end
 
   def nearbys
@@ -71,8 +81,8 @@ class ProgramsInformationController < ApplicationController
       state_counts[(r.state || '')] += 1
       type_counts[(r.program_type || '')] +=1
     end
-    @filters["program_type"] = type_counts.map{|k,v| {"key" => k,"doc_count" => v} }
-    @filters["state"] = state_counts.map{|k,v| {"key" => k,"doc_count" => v} }
+    @filters["program_type"] = type_counts.map{ |k,v| {"key" => k,"doc_count" => v} }
+    @filters["state"] = state_counts.map{ |k,v| {"key" => k,"doc_count" => v} }
     structure
   end
 

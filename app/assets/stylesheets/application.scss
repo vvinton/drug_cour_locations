@@ -16,6 +16,7 @@
  */
 @import "bootstrap";
 @import "font-awesome";
+@import "dataTables/extras/dataTables.responsive";
 
 .state-filter {
   min-height: 800px;
@@ -47,6 +48,10 @@
   border-radius: 5px;
   background: #9c6;
   font-family: serif;
+}
+
+.text-primary {
+  color: rgb(51, 122, 183);
 }
 
 .table-condensed{
@@ -82,4 +87,17 @@
 }
 @media (max-width: 370px) {
   .pagination .page.away-1 { display: none; }
+}
+
+.container {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.dataTables_paginate a {
+  margin: 5px;
+}
+
+tfoot {
+  font-weight: bold;
 }

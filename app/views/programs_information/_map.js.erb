@@ -81,7 +81,7 @@ $(function() {
       $.each(invisible_marker_locations, function( index, marker ) {
          map.addLayer(
           L.marker(
-            [marker[0], marker[1]], 
+            [marker[0], marker[1]],
             { icon: fancy_marker,
               zipCode: marker[2],
               isLocation: false
@@ -93,7 +93,7 @@ $(function() {
       if (render_center_user_location) {
         var star_marker = L.icon({iconUrl: 'star.png'});
         var star =  L.marker(
-          [user_location.lat, user_location.lng], 
+          [user_location.lat, user_location.lng],
           { icon: star_marker }
         )
         map.addLayer(star);
@@ -120,9 +120,9 @@ $(function() {
           isLocation: true,
           zipCodeAbbrev: <%= res.zip_code %>
         }
-      ).bindPopup('<%=escape_javascript(render(partial: 'popup_text', locals: { res: res }))%>');
+      ).bindPopup('<%=escape_javascript(render(partial: 'popup_text', locals: { res: res, sc: @all_state_coordinators[res.state] }))%>');
       markers.addLayer(m<%= res.id %>);
-      group.addLayer(m<%= res.id %>); 
+      group.addLayer(m<%= res.id %>);
     <% end %>
   <% end %>
   var fancy_marker = L.icon({iconUrl: 'zip_marker.png'});
@@ -130,11 +130,11 @@ $(function() {
 
   <% if @center %>
    var center =  L.marker(
-        [<%= @center[:lat] %>, <%= @center[:lng] %>], 
+        [<%= @center[:lat] %>, <%= @center[:lng] %>],
         { icon: star_marker }
       )
     map.addLayer(center);
-    group.addLayer(center); 
+    group.addLayer(center);
   <% end %>
   map.addLayer(markers);
   map.fitBounds(group.getBounds());
@@ -145,7 +145,7 @@ $(function() {
     <% if si.lat && si.lng  %>
       map.addLayer(
         L.marker(
-          [<%= si.lat %>, <%= si.lng %>], 
+          [<%= si.lat %>, <%= si.lng %>],
           { icon: fancy_marker,
             zipCode: '<%= si.short_name %>',
             isLocation: false
@@ -157,8 +157,8 @@ $(function() {
 $('#current-search').html('<%= escape_javascript(@conditions.to_json) %>')
 $('#current-conditions').html('<%= escape_javascript(@search.to_s) %>')
   //add event listeners to the map
-  setTimeout(function(){ 
+  setTimeout(function(){
     map.on('zoomend', getCurrentState);
-    map.on('moveend', getCurrentState); 
-  }, 1000)
+    map.on('moveend', getCurrentState);
+  }, 3000)
 });

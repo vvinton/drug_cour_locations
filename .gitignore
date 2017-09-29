@@ -16,11 +16,11 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+.env
 
 # Ignore Byebug command history file.
 .byebug_history
 
 # Ignore secrets
 /config/database.yml
-/config/secrets.yml
 public/system/*
