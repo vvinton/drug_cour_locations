@@ -1,10 +1,12 @@
-ruby '2.3.3'
+ruby '2.4.2'
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
+
+gem 'dotenv-rails', require: 'dotenv/rails-now'
 
 gem 'rails', '~> 5.0.2'
 gem 'pg'
@@ -33,9 +35,9 @@ gem 'mdb'
 gem 'font-awesome-rails'
 gem 'sucker_punch'
 gem 'slim-rails'
-gem 'pry'
 
 gem 'jquery-datatables-rails', '~> 3.4.0'
+gem 'pry'
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -49,6 +51,7 @@ group :development do
   gem 'listen', '~> 3.0.5'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'foreman'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

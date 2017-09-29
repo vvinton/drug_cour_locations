@@ -120,7 +120,7 @@ $(function() {
           isLocation: true,
           zipCodeAbbrev: <%= res.zip_code %>
         }
-      ).bindPopup('<%=escape_javascript(render(partial: 'popup_text', locals: { res: res }))%>');
+      ).bindPopup('<%=escape_javascript(render(partial: 'popup_text', locals: { res: res, sc: @all_state_coordinators[res.state] }))%>');
       markers.addLayer(m<%= res.id %>);
       group.addLayer(m<%= res.id %>);
     <% end %>

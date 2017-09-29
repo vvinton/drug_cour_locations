@@ -4,7 +4,7 @@ var marker_locations = [
       [
         <%= res.lat %>,
         <%= res.long %>,
-        '<%=escape_javascript(render(partial: 'popup_text', locals: { res: res }))%>',
+        '<%=escape_javascript(render(partial: 'popup_text', locals: { res: res, sc: @all_state_coordinators[res.state] }))%>',
         <%= res.zip_code %>
       ],
     <% end %>

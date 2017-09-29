@@ -6,6 +6,9 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Load the .env environment so we can maintain things more easily
+Dotenv::Railtie.load
+
 module DrugCourtLocation
   class Application < Rails::Application
     config.active_job.queue_adapter = :sucker_punch

@@ -7,7 +7,7 @@ class ProgramsInformationController < ApplicationController
   def index
     compose_query
     set_map_results
-    @results = ProgramInformation.search(
+    @results = ProgramInformation.includes(:state_coordinator).search(
       @search.to_s,
       where: @conditions,
       aggs: [:program_type, :state],
@@ -15,11 +15,20 @@ class ProgramsInformationController < ApplicationController
       per_page: 10,
       load: false
     )
+    states = @results.map{ |x| x.state }.uniq
+    @state_coordinators = {}
+    StateCoordinator.where(state: states).each do |sc|
+      @state_coordinators[sc.state] = sc
+    end
   end
 
   def set_map_results
     no_zip_conditions = {}
     @all_results = ProgramInformation.search(@search.to_s, where: no_zip_conditions, load: false, limit: 10_000)
+    @all_state_coordinators = {}
+    StateCoordinator.all.each do |sc|
+      @all_state_coordinators[sc.state] = sc.attributes.to_h
+    end
   end
 
   def statistic
@@ -73,7 +82,7 @@ class ProgramsInformationController < ApplicationController
       type_counts[(r.program_type || '')] +=1
     end
     @filters["program_type"] = type_counts.map{ |k,v| {"key" => k,"doc_count" => v} }
-    @filters["state"] = state_counts.map{|k,v| {"key" => k,"doc_count" => v} }
+    @filters["state"] = state_counts.map{ |k,v| {"key" => k,"doc_count" => v} }
     structure
   end
 
