@@ -1,8 +1,30 @@
 <%=
   CSV.generate do |csv|
-    csv << ['State','County','Court Type','Program Name','Address', 'Website']
+    csv << [ 'State',
+             'County',
+             'Court Type',
+             'Program Name',
+             'Address',
+             'Website',
+             'State Coordinator First Name',
+             'State Coordinator Last Name',
+             'State Coordinator Title',
+             'State Coordinator Email',
+             'State Coordinator Phone'
+           ]
     @all_results.each do |result|
-      csv << [result.state,result.county,result.program_type,result.program_name,result.address,result.website]
+      csv << [ result.state,
+               result.county,
+               result.program_type,
+               result.program_name,
+               result.address,
+               result.website,
+               @all_state_coordinators.dig(result.state, 'first_name'),
+               @all_state_coordinators.dig(result.state, 'last_name'),
+               @all_state_coordinators.dig(result.state, 'title'),
+               @all_state_coordinators.dig(result.state, 'email'),
+               @all_state_coordinators.dig(result.state, 'phone')
+            ]
     end
   end
 %>
