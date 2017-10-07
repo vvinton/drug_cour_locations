@@ -31,6 +31,6 @@
       .row
         - if @query[:v].include?('Map')
           #map
-    .row.table-striped
+    .row.table-striped.locations-list-table-container
       - if @query[:v].include?('List')
-        = render 'locations_list'
+        = render 'locations_list', locals: {results: @results}

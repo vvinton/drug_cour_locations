@@ -1,6 +1,19 @@
 require 'csv'
 namespace :import do
 
+  desc 'recreate search locations'
+  task :search_locations => :environment do
+    ProgramInformation.find_each do |pi|
+      if pi.lat && pi.long && pi.geodata && !pi.lat.nan? && !pi.long.nan? && pi.zip_code
+        search_item = SearchItem.find_or_create_from_program_information(pi)
+        search_item_location = SearchItemLocation.find_or_create_location(search_item, pi) if search_item
+        puts "PI: #{pi.id} - #{pi.zip_code} SI:#{search_item.id} SIL: #{search_item_location.id}"
+      end
+    end
+    puts "Reindexing SearchItem"
+    SearchItem.reindex
+  end
+
   desc 'recreate geodatum'
   task :geodatum => :environment do
     GeoDatum.delete_all
@@ -17,7 +30,7 @@ namespace :import do
   end
 
   desc 'truncate data for reimport'
-  task :drop_everything => :environment do 
+  task :drop_everything => :environment do
     User.delete_all
     Role.delete_all
     SearchItem.delete_all

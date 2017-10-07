@@ -140,7 +140,7 @@ $(function() {
   map.fitBounds(group.getBounds());
   $('.leaflet-control-attribution').hide()
 
-  //render invizible markers for positioning
+  //render invisible markers for positioning
   <% SearchItem.search('*', load: false).each do |si| %>
     <% if si.lat && si.lng  %>
       map.addLayer(
@@ -154,6 +154,7 @@ $(function() {
       );
     <% end %>
   <% end %>
+
 $('#current-search').html('<%= escape_javascript(@conditions.to_json) %>')
 $('#current-conditions').html('<%= escape_javascript(@search.to_s) %>')
   //add event listeners to the map

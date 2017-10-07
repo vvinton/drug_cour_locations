@@ -7,15 +7,13 @@ class ProgramsInformationController < ApplicationController
   def index
     compose_query
     set_map_results
-    @results = ProgramInformation.includes(:state_coordinator).search(
-      @search.to_s,
-      where: @conditions,
-      aggs: [:program_type, :state],
-      page: params[:page],
-      per_page: 10,
-      load: false
-    )
-    states = @results.map{ |x| x.state }.uniq
+    if request.format == "text/csv"
+      csv_results_query
+    else
+      regular_results_query
+    end
+    @results.each { |x| puts x.state }
+    states = @results.map(&:state).uniq
     @state_coordinators = {}
     StateCoordinator.where(state: states).each do |sc|
       @state_coordinators[sc.state] = sc
@@ -23,8 +21,9 @@ class ProgramsInformationController < ApplicationController
   end
 
   def set_map_results
-    no_zip_conditions = {}
-    @all_results = ProgramInformation.search(@search.to_s, where: no_zip_conditions, load: false, limit: 10_000)
+    @all_results = ProgramInformation.search(@search.to_s,
+                                             where: @conditions,
+                                             load: false, limit: 10_000)
     @all_state_coordinators = {}
     StateCoordinator.all.each do |sc|
       @all_state_coordinators[sc.state] = sc.attributes.to_h
@@ -38,6 +37,25 @@ class ProgramsInformationController < ApplicationController
     @program_types = results[:program_types]
     @states = results[:total].keys.sort
     @all = results[:all].sort_by{ |k, v| k }.to_h
+  end
+
+  def regular_results_query
+    @results = ProgramInformation.includes(:state_coordinator).search(
+      @search.to_s,
+      where: @conditions,
+      aggs: [:program_type, :state],
+      page: params[:page],
+      per_page: 10,
+      load: false
+    )
+  end
+
+  def csv_results_query
+    @results = ProgramInformation.includes(:state_coordinator).search(
+      @search.to_s,
+      where: @conditions,
+      aggs: [:program_type, :state],
+      load: false )
   end
 
   def nearbys
@@ -99,9 +117,11 @@ class ProgramsInformationController < ApplicationController
 
     @search = (params[:q].presence || "*").to_s
     @conditions = {}
-    @conditions[:state] = params[:s].uniq if params[:s].present?
+    @conditions[:state] = params[:s].uniq        if params[:s].present?
     @conditions[:program_type] = params[:t].uniq if params[:t].present?
-    @conditions[:zip_code] = params[:z].uniq if params[:z].present? && (!params[:v] || params[:v] && params[:v].include?('Map'))
+    if params[:z].present? && (!params[:v] || params[:v] && params[:v].include?('Map'))
+      @conditions[:zip_code] = ZipCodeParams.new(params).matching_zip_codes
+    end
 
     @query = {
       t: (@conditions[:program_type] || []),
@@ -111,5 +131,4 @@ class ProgramsInformationController < ApplicationController
       v: (params[:v] || ['Map', 'List'])
     }
   end
-
 end

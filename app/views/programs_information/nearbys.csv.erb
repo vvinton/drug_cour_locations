@@ -1,7 +1,7 @@
-<%= 
-  CSV.generate do |csv| 
-    csv << ['State','County','Court Type','Program Name','Address','Coordinator Name','Contact Email','Contact Phone', 'Website'] 
-    @all_results.each do |result|
+<%=
+  CSV.generate do |csv|
+    csv << ['State','County','Court Type','Program Name','Address','Coordinator Name','Contact Email','Contact Phone', 'Website']
+    @results.each do |result|
       csv << [result.state,result.county,result.program_type,result.program_name,result.address,result.contact_name,result.email,result.phone_number,result.website]
     end
   end
