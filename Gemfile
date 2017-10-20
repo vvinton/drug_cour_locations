@@ -37,11 +37,13 @@ gem 'sucker_punch'
 gem 'slim-rails'
 
 gem 'jquery-datatables-rails', '~> 3.4.0'
-gem 'pry'
 
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'sqlite3'
+end
+
+group :development, :production_local, :test do
   gem 'pry'
 end
 
