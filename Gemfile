@@ -24,7 +24,7 @@ gem 'simple_form'
 gem 'nested_form'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'faker'
-gem 'factory_girl'
+gem 'factory_bot'
 gem 'kaminari'
 gem 'rails-erd'
 gem 'geocoder'
@@ -35,12 +35,20 @@ gem 'mdb'
 gem 'font-awesome-rails'
 gem 'sucker_punch'
 gem 'slim-rails'
+gem 'concurrent-ruby'
+gem 'thread_safe'
+gem 'activesupport'
+gem 'minitest'
+gem 'rake'
+gem 'retryable'
+
+# used to create a temp cache to store items when doing things like fixtures.
+gem 'moneta'
 
 gem 'jquery-datatables-rails', '~> 3.4.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri
-  gem 'sqlite3'
 end
 
 group :development, :production_local, :test do

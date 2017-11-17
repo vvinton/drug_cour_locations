@@ -28,17 +28,17 @@
         %td.state_coordinator
           - state_coordinator = @state_coordinators[result.state]
           .state_coordinator_name
-            = state_coordinator.full_name
+            = state_coordinator&.full_name
           .state_coordinator_title
-            = state_coordinator.title
+            = state_coordinator&.title
           .state_coordinator_email
-            - if state_coordinator.email.to_s.length > 0
+            - if state_coordinator&.email&.to_s&.length.to_i > 0
               %i.fa.fa-envelope
-              = " #{state_coordinator.email}"
+              = " #{state_coordinator&.email}"
           .state_coordinator_phone
-            - if state_coordinator.phone.to_s.length > 0
+            - if state_coordinator&.phone&.to_s&.length.to_i > 0
               %i.fa.fa-phone
-              = state_coordinator.phone
+              = state_coordinator&.phone
         - if current_user && current_user.role.name == 'admin'
           %th
             = link_to 'edit', edit_programs_information_path(result.id)

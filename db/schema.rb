@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170411160502) do
+ActiveRecord::Schema.define(version: 20171116122755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,21 +26,6 @@ ActiveRecord::Schema.define(version: 20170411160502) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.index ["program_information_id"], name: "index_coordinator_informations_on_program_information_id", using: :btree
-  end
-
-  create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
   end
 
   create_table "geo_data", force: :cascade do |t|
@@ -159,7 +144,7 @@ ActiveRecord::Schema.define(version: 20170411160502) do
   create_table "state_coordinators", force: :cascade do |t|
     t.string   "current_contact"
     t.string   "last_name"
-    t.string   "firt_name"
+    t.string   "first_name"
     t.string   "email"
     t.string   "title"
     t.string   "phone"
@@ -169,6 +154,8 @@ ActiveRecord::Schema.define(version: 20170411160502) do
     t.string   "website"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "state"
+    t.string   "city"
   end
 
   create_table "users", force: :cascade do |t|
@@ -180,12 +167,23 @@ ActiveRecord::Schema.define(version: 20170411160502) do
     t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  end
+
+  create_table "zipdbs", force: :cascade do |t|
+    t.integer  "zip"
+    t.float    "lng"
+    t.float    "lat"
+    t.string   "city"
+    t.string   "state"
+    t.string   "county"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

@@ -25,7 +25,12 @@ module ProgramsInformationHelper
 
   def link_to_csv_export
     params_string = CGI.unescape(@query.to_query)
-    link_to('Download CSV', "/programs_information.csv?#{params_string}", class: "btn btn-default", role: "button", id: 'csv-export-link')
+    link_to('Download with current filters', "/programs_information.csv?#{params_string}", id: 'csv-export-link')
+  end
+
+  def link_to_all_download
+    params_string = CGI.unescape(@query.to_query)
+    link_to('Download everything', "/programs_information.csv", id: 'csv-export-all-link')
   end
 
   def link_to_nearbys_csv_export

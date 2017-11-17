@@ -5,9 +5,10 @@ class ProgramsInformationController < ApplicationController
   before_filter :find_program_information, only: [:edit, :update]
 
   def index
+    puts "Query params are: #{params}"
     compose_query
     set_map_results
-    if request.format == "text/csv"
+    if request.format == 'text/csv'
       csv_results_query
     else
       regular_results_query
@@ -23,6 +24,7 @@ class ProgramsInformationController < ApplicationController
   def set_map_results
     @all_results = ProgramInformation.search(@search.to_s,
                                              where: @conditions,
+                                             fields: ProgramInformation.searchable_fields,
                                              load: false, limit: 10_000)
     @all_state_coordinators = {}
     StateCoordinator.all.each do |sc|
@@ -43,6 +45,7 @@ class ProgramsInformationController < ApplicationController
     @results = ProgramInformation.includes(:state_coordinator).search(
       @search.to_s,
       where: @conditions,
+      fields: ProgramInformation.searchable_fields,
       aggs: [:program_type, :state],
       page: params[:page],
       per_page: 10,
@@ -54,6 +57,7 @@ class ProgramsInformationController < ApplicationController
     @results = ProgramInformation.includes(:state_coordinator).search(
       @search.to_s,
       where: @conditions,
+      limit: 10_000,
       aggs: [:program_type, :state],
       load: false )
   end
@@ -114,11 +118,11 @@ class ProgramsInformationController < ApplicationController
 
   def compose_query
     @center = {lat: params[:lat].to_f, lng: params[:lng].to_f} if params[:lat] && params[:lng]
-
     @search = (params[:q].presence || "*").to_s
     @conditions = {}
     @conditions[:state] = params[:s].uniq        if params[:s].present?
     @conditions[:program_type] = params[:t].uniq if params[:t].present?
+    params.delete(:z) if params[:z] == ['none']
     if params[:z].present? && (!params[:v] || params[:v] && params[:v].include?('Map'))
       @conditions[:zip_code] = ZipCodeParams.new(params).matching_zip_codes
     end
