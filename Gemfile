@@ -41,6 +41,7 @@ gem 'activesupport'
 gem 'minitest'
 gem 'rake'
 gem 'retryable'
+gem 'rgeo'
 
 # used to create a temp cache to store items when doing things like fixtures.
 gem 'moneta'

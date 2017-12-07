@@ -25,6 +25,8 @@
             = result.program_name
           .program_address
             = result.address
+          .program_city_state_zip
+            = city_state_zip(result)
         %td.state_coordinator
           - state_coordinator = @state_coordinators[result.state]
           .state_coordinator_name

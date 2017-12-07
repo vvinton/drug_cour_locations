@@ -52,4 +52,31 @@ module ProgramsInformationHelper
     )
     link_to(caption, "/programs_information?#{params_string}")
   end
+
+  def city_state_zip(res)
+    [res.city, res.state, res.zip_code].delete_if {|x| x.blank? }.join(", ")
+  end
+
+  def popup_text(res, sc)
+    str = ''
+    str << "<h5>Program Information</h5>"
+    str << "<ul class=\'popup-list\' id=\'program-popup-information-#{res.id}>\'>"
+    str << "<li>State: #{res.state}</li>"
+    str << "<li>County: #{res.country}</li>"
+    str << "<li>Court Type: #{res.program_type}</li>"
+    str << "<li>Program Name: #{res.program_name}</li>"
+    str << "<li>Address: #{res.address}</li>" if res.address
+    str << "<li>Website: #{link_to(res.website, res.website)}</li>" if res.website
+    str << "</ul>"
+    if sc
+      str << "<h5>Coordinator</h5>"
+      str << "<ul class=\'popup-list\' id=\'coordinator-popup-information\'>"
+      str << "<li>" + sc['first_name'] + " " +  sc['last_name'] + "</li>"
+      str << "<li>" + sc['title'] + "</li>"
+      str << "<li>" + sc['email'] + "</li>"
+      str << "<li>" + sc['phone'] + "</li>"
+      str << '</ul>'
+    end
+    raw(str)
+  end
 end

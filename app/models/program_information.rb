@@ -17,6 +17,10 @@ class ProgramInformation < ApplicationRecord
     end
   end
 
+  def city_state_zip
+    [city, state, zip_code].delete_if {|x| x.blank? }.join(', ')
+  end
+
   def search_data
     {
       address:      address,

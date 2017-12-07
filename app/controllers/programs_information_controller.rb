@@ -5,7 +5,6 @@ class ProgramsInformationController < ApplicationController
   before_filter :find_program_information, only: [:edit, :update]
 
   def index
-    puts "Query params are: #{params}"
     compose_query
     set_map_results
     if request.format == 'text/csv'
@@ -49,7 +48,7 @@ class ProgramsInformationController < ApplicationController
       aggs: [:program_type, :state],
       page: params[:page],
       per_page: 10,
-      load: false
+      load: true
     )
   end
 
@@ -58,8 +57,9 @@ class ProgramsInformationController < ApplicationController
       @search.to_s,
       where: @conditions,
       limit: 10_000,
-      aggs: [:program_type, :state],
-      load: false )
+      aggs: %i[program_type state],
+      load: true
+    )
   end
 
   def nearbys

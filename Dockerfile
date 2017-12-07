@@ -3,6 +3,7 @@ MAINTAINER William Flanagan <wflanagan@audienti.com>
 
 ENV APP_ROOT /var/app/maps
 ENV DEBIAN_FRONTEND noninteractive
+ENV BUNDLE_PATH /bundle
 
 WORKDIR $APP_ROOT
 
@@ -14,14 +15,17 @@ RUN set -ex \
     && mkdir -p $APP_ROOT \
     && mkdir -p $APP_ROOT/log/ \
     && mkdir -p /bundle \
+    && mkdir -p /bundle/bin \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY ./Gemfile $APP_ROOT/Gemfile
 
+WORKDIR $APP_ROOT
+
 RUN set -ex \
     && gem install bundler \
-    && bundle install --jobs 20 --retry 5
+    && bundle install
 
 COPY . $APP_ROOT
 
