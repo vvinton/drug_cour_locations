@@ -1,6 +1,13 @@
 require 'csv'
 namespace :import do
 
+  desc 'truncate data for reimport'
+  task :reindex => :environment do
+    SearchItem.reindex
+    ProgramInformation.reindex
+  end
+
+
   desc 'recreate search locations'
   task :search_locations => :environment do
     ProgramInformation.find_each do |pi|

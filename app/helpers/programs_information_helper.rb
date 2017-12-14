@@ -4,6 +4,19 @@ module ProgramsInformationHelper
     text.to_s.gsub(',', ' ')
   end
 
+  def clean_csv_phone(text)
+    text.to_s.gsub(/ ext\.$/, '')
+  end
+
+  def clean_zip(text)
+    return '' if text.to_s.include?('{')
+    if text.to_s.length == 9
+      "#{text[0...4]}-#{text[5...8]}"
+    else
+      text.to_s
+    end
+  end
+
   def link_to_facet(url_param_name, result_name, result_count = nil, highlight = false)
     params_string = CGI.unescape(
       if checked = @query[url_param_name].include?(result_name)

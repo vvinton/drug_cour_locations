@@ -3,14 +3,15 @@
     csv << [ 'State',
              'County',
              'Court Type',
+             'Court Name',
              'Program Name',
              'Address',
              'City',
              'State',
              'Zip',
-             'Website',
              'Latitude',
              'Longitude',
+             'Website',
              'State Coordinator First Name',
              'State Coordinator Last Name',
              'State Coordinator Title',
@@ -19,20 +20,21 @@
     @results.each do |result|
       csv << [ clean_csv_field(result.state),
                clean_csv_field(result.county),
+               clean_csv_field(result.court_name),
                clean_csv_field(result.program_type),
                clean_csv_field(result.program_name),
                clean_csv_field(result.address),
-               clean_csv_field(result.website),
                clean_csv_field(result.city),
                clean_csv_field(result.state),
-               clean_csv_field(result.zip_code),
+               clean_zip(result.zip_code),
                clean_csv_field(result.lat),
                clean_csv_field(result.long),
+               clean_csv_field(result.website),
                @all_state_coordinators.dig(result.state, 'first_name'),
                @all_state_coordinators.dig(result.state, 'last_name'),
                @all_state_coordinators.dig(result.state, 'title'),
                @all_state_coordinators.dig(result.state, 'email'),
-               @all_state_coordinators.dig(result.state, 'phone') ]
+               clean_csv_phone(@all_state_coordinators.dig(result.state, 'phone')) ]
     end
   end.html_safe
 %>

@@ -12,7 +12,6 @@ class ProgramsInformationController < ApplicationController
     else
       regular_results_query
     end
-    @results.each { |x| puts x.state }
     states = @results.map(&:state).uniq
     @state_coordinators = {}
     StateCoordinator.where(state: states).each do |sc|
