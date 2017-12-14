@@ -1,8 +1,8 @@
 class ProgramsInformationController < ApplicationController
   ActionController::Parameters.permit_all_parameters = true
 
-  before_filter :is_admin?, only: [:edit, :update]
-  before_filter :find_program_information, only: [:edit, :update]
+  before_action :is_admin?, only: %i[edit update]
+  before_action :find_program_information, only: %i[edit update]
 
   def index
     compose_query

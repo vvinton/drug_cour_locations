@@ -1,5 +1,9 @@
 module ProgramsInformationHelper
 
+  def clean_csv_field(text)
+    text.to_s.gsub(',', ' ')
+  end
+
   def link_to_facet(url_param_name, result_name, result_count = nil, highlight = false)
     params_string = CGI.unescape(
       if checked = @query[url_param_name].include?(result_name)
