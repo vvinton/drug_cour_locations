@@ -10,8 +10,9 @@ module ProgramsInformationHelper
 
   # fixes formatting issues on the Zip code from the import to the database
   def clean_zip(text)
+    text = text.to_s
     return '' if text.to_s.include?('{')
-    zip_array = text.to_s.split('-', 2)
+    zip_array = text.to_s.split('-')
     return '' if zip_array.length == 0
     first_part = "0#{zip_array.first}" if zip_array.first.length == 4
     last_part = zip_array.last if zip_array.length > 1
