@@ -8,13 +8,15 @@ module ProgramsInformationHelper
     text.to_s.gsub(/ ext\.$/, '')
   end
 
+  # fixes formatting issues on the Zip code from the import to the database
   def clean_zip(text)
     return '' if text.to_s.include?('{')
-    if text.to_s.length == 9
-      "#{text[0...4]}-#{text[5...8]}"
-    else
-      text.to_s
-    end
+    zip_array = text.to_s.split('-', 2)
+    first_part = "0#{split_text.first}" if split_text.first.length == 4
+    last_part  = zip_array.last if zip_array.length > 1
+    text = first_part
+    text = "#{first_part}-#{last_part}" if !last_part.nil?
+    text
   end
 
   def link_to_facet(url_param_name, result_name, result_count = nil, highlight = false)

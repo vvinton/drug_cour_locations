@@ -1,4 +1,4 @@
-FROM omalab/devbox:0.8.9
+FROM omalab/devbox:0.10.1
 MAINTAINER William Flanagan <wflanagan@audienti.com>
 
 ENV APP_ROOT /var/app/maps
