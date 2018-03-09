@@ -13,11 +13,16 @@ module ProgramsInformationHelper
     text = text.to_s
     return '' if text.to_s.include?('{')
     zip_array = text.to_s.split('-', 2)
-    first_part = "0#{zip_array.first}" if zip_array&.first&.length == 4
+    first_part = zip_array.first
+    last_part  = zip_array.last if zip_array.length > 1
+    first_part = "0#{first_part}" if first_part&.to_s&.length == 4
     last_part = zip_array.last if zip_array.length > 1
     text = first_part
     text = "#{first_part}-#{last_part}" if !last_part.nil?
     text
+  rescue => e
+    puts "#{e.inspect}"
+    ''
   end
 
   def link_to_facet(url_param_name, result_name, result_count = nil, highlight = false)
