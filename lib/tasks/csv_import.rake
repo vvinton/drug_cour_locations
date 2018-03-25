@@ -14,7 +14,6 @@ namespace :import do
       if pi.lat && pi.long && pi.geodata && !pi.lat.nan? && !pi.long.nan? && pi.zip_code
         search_item = SearchItem.find_or_create_from_program_information(pi)
         search_item_location = SearchItemLocation.find_or_create_location(search_item, pi) if search_item
-        puts "PI: #{pi.id} - #{pi.zip_code} SI:#{search_item.id} SIL: #{search_item_location.id}"
       end
     end
     puts "Reindexing SearchItem"

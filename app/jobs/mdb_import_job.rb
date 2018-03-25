@@ -88,7 +88,6 @@ class MdbImportJob < ApplicationJob
         next
       end
     end
-    
-    RecreateGeodatumJob.perform_async
+    RecreateGeodatumJob.new.perform
   end
 end
