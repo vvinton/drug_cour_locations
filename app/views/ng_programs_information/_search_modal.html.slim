@@ -1,0 +1,47 @@
+#newSearchModal.modal.modal-primary role="dialog" tabindex='-1' aria-labelledby="newSearchModalDialog" aria-hidden="true"
+  .modal-dialog.modal-primary role='document'
+    .modal-content
+      = form_tag programs_information_index_path, method: 'get' do
+        .modal-header
+          h4.modal-title Search Options
+          button.close type='button' data-dismiss='modal' aria-lable='Close'
+            span aria-hidden='true'
+              | x
+        .modal-body
+          .container-fluid
+            .row
+              .col-md-8
+                - @query.merge(q: []).each do |section, conditions|
+                  - conditions.each do |cond|
+                    = hidden_field_tag "#{section}[]", cond
+                .input-group.br
+                  = text_field_tag :q, (params[:q] == '*' ? '' : params[:q]), placeholder: 'Search', type: 'search', class: 'form-control search', id: 'srch-term'
+                  span.input-group-btn
+                    .btn-default
+                      button.btn.btn-default type='submit'
+                        i.fa.fa-search
+              .col-md-2
+                .btn-group
+                  .btn-group
+                    .dropdown.view-options
+                      = render 'view_options'
+              .col-md-2
+                .btn-group
+                  .dropdown.export_options
+                    button.btn.btn-default.dropdown-toggle data-toggle="dropdown" type="button"
+                      |  Download
+                      span.caret
+                    ul.dropdown-menu
+                      li.dropdown-header Download Options
+                      li
+                        = link_to_csv_export
+                      li
+                        = link_to_all_download
+
+        .modal-footer
+          button.btn.btn-secondary type='button' data-dismiss='modal'
+            | Close
+          span.input-group-btn
+            .btn-default
+              button.btn.btn-default type='submit'
+                i.fa.fa-search
