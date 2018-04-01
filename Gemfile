@@ -46,7 +46,7 @@ gem 'rgeo'
 # used to create a temp cache to store items when doing things like fixtures.
 gem 'moneta'
 
-gem 'jquery-datatables-rails', '~> 3.4.0'
+gem 'jquery-datatables-rails', '~> 3.4.0'     
 
 group :development, :test do
   gem 'byebug', platform: :mri

@@ -1,32 +1,28 @@
-class ProgramsInformationController < ApplicationController
+class NgProgramsInformationController < ApplicationController
   ActionController::Parameters.permit_all_parameters = true
 
   before_action :is_admin?, only: %i[edit update]
   before_action :find_program_information, only: %i[edit update]
 
   def index
+    set_state_coordinators
     compose_query
-    set_map_results
     if request.format == 'text/csv'
       csv_results_query
     else
-     regular_results_query
+      regular_results_query
     end
-    states  = @results.map(&:state).uniq
-    @state_coordinators = {}
-    StateCoordinator.where(state: states).each do |sc|
-      @state_coordinators[sc.state] = sc
-    end
+    states = @results.map(&:state).uniq
+    @metrics = ProgramByStateCounts.metrics
   end
 
-  def set_map_results
-    @all_results = ProgramInformation.search(@search.to_s,
-                                             where: @conditions,
-                                             fields: ProgramInformation.searchable_fields,
-                                             load: false, limit: 10_000)
-    @all_state_coordinators = {}
-    StateCoordinator.all.each do |sc|
-      @all_state_coordinators[sc.state] = sc.attributes.to_h
+  def set_state_coordinators
+    @state_coordinators ||= begin
+      state_coordinators = {}
+      StateCoordinator.all.each do |sc|
+        state_coordinators[sc.state] = sc
+      end
+      state_coordinators
     end
   end
 
@@ -37,6 +33,7 @@ class ProgramsInformationController < ApplicationController
     @program_types = results[:program_types]
     @states = results[:total].keys.sort
     @all = results[:all].sort_by{ |k, v| k }.to_h
+    @metrics = results
   end
 
   def regular_results_query

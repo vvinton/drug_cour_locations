@@ -55,7 +55,7 @@ module ProgramsInformationHelper
 
   def link_to_all_download
     params_string = CGI.unescape(@query.to_query)
-    link_to('Download everything', "/programs_information.csv", id: 'csv-export-all-link')
+    link_to('Download everything', "/programs_information.csv", id: 'csv-export-all-link', class: 'btn btn-primary')
   end
 
   def link_to_nearbys_csv_export
@@ -65,9 +65,9 @@ module ProgramsInformationHelper
 
   def view_option_title
     if @query[:v].size > 1
-     'Map & List'
+     'Filters '
     else
-      @query[:v].first || 'Map & List'
+      @query[:v].first || 'Filters '
     end
   end
 

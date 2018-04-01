@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171116122755) do
+ActiveRecord::Schema.define(version: 20180329142503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 20171116122755) do
     t.datetime "updated_at", null: false
     t.index ["program_information_id"], name: "index_coordinator_informations_on_program_information_id"
   end
+
+
 
   create_table "geo_data", id: :serial, force: :cascade do |t|
     t.jsonb "data"
