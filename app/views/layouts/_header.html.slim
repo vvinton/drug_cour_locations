@@ -1,0 +1,24 @@
+.container-fluid.header-section
+  header
+    nav.navbar.navbar-toggleable-md.navbar-fixed-top.navbar-expand-lg.navbar-light.bg-light style="border-bottom: 1px solid #ccc;"
+      a.navbar-brand href="#" NDCRC Maps
+      button.navbar-toggler.navbar-toggler-right type="button" data-toggle="collapse" data-target="#primary-navbar" aria-controls="primary-navbar" aria-expanded="false" aria-label="Toggle Navigation"
+        i.fa.fa-bars
+      #primary-navbar.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item.active
+            a.nav-link href="#"
+              | Home
+              span.sr-only
+                | (current)
+          li.nav-item
+            a.nav-link href="#"
+              | Search &amp; List
+          li.nav-item
+            a.nav-link href="#"
+              | Contact
+        = link_to_all_download
+        // form.form-inline.my-2.my-md-0
+        //   input.form-control.mr-sm-4 type="text" placeholder="Search Drug Treatment Courts"
+        //   button.btn.btn-outline-success.my-2.my-sm-0 type="submit"
+        //     i.fa.fa-search

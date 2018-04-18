@@ -42,6 +42,9 @@ gem 'minitest'
 gem 'rake'
 gem 'retryable'
 gem 'rgeo'
+gem 'd3-rails'
+gem 'rgb'
+# gem 'webpacker'
 
 # used to create a temp cache to store items when doing things like fixtures.
 gem 'moneta'

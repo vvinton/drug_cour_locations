@@ -14,6 +14,7 @@
 //= require jquery_nested_form
 //= require bootstrap
 //= require jquery_ujs
+//= require d3
 //= require dataTables/jquery.dataTables
 //= require dataTables/extras/dataTables.responsive
 //= require_tree .
