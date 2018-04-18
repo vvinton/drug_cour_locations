@@ -25,7 +25,7 @@ module ProgramsInformationHelper
     ''
   end
 
-  def link_to_facet(url_param_name, result_name, result_count = nil, highlight = false)
+  def link_to_facet(url_param_name, result_name, result_count = nil, highlight = false, additional_class_names = "")
     params_string = CGI.unescape(
       if checked = @query[url_param_name].include?(result_name)
         @query.merge(url_param_name => (@query[url_param_name] - [result_name]))
@@ -35,9 +35,9 @@ module ProgramsInformationHelper
     )
     caption = result_name + (result_count ? " (#{result_count})" : '')
     if checked && highlight
-      content_tag(:strong){link_to(caption, "/programs_information?#{params_string}")}
+      content_tag(:strong){link_to(caption, "/programs_information?#{params_string}", class: "#{additional_class_names}")}
     else
-      link_to(caption, "/programs_information?#{params_string}")
+      link_to(caption, "/programs_information?#{params_string}", class: "#{additional_class_names}")
     end
   end
 

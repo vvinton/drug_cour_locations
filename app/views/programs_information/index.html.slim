@@ -1,0 +1,39 @@
+.container-fluid.search-area
+  .row
+    ul.list-inline
+      li.list-inline-item
+        .dropdown
+          button.btn.dropdown-toggle type="button" id="court-type-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            | Court Type
+          .dropdown-menu aria-labelledby="court-type-dropdown"
+            - @results.aggs["program_type"]["buckets"].each do |result|
+              = link_to_facet(:t, result['key'], result['doc_count'], true, 'dropdown-item')
+            - (@conditions[:program_type] || []).each do |pi|
+              - unless @results.aggs["program_type"]["buckets"].map{|r| r['key']}.include?(pi)
+                = link_to_facet(:t, pi, 0, true, 'dropdown-item')
+      li.list-inline-item
+        .dropdown
+          button.btn.dropdown-toggle type="button" id="state-select-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            | States
+          .dropdown-menu aria-labelledby="state-select-dropdown"
+            - @results.aggs["state"]["buckets"].each do |result|
+              = link_to_facet(:s, result['key'], result['doc_count'], true, "dropdown-item")
+            - (@conditions[:state] || []).each do |state|
+              - unless @results.aggs["state"]["buckets"].map{|r| r['key']}.include?(state)
+                = link_to_facet(:s, state, 0, true, "dropdown-item")
+      li.list-inline-item
+        = form_tag programs_information_index_path, method: 'get' do
+          - @query.merge(q: []).each do |section, conditions|
+            - conditions.each do |cond|
+              = hidden_field_tag "#{section}[]", cond
+          .input-group.br
+            = text_field_tag :q, (params[:q] == '*' ? '' : params[:q]  ), placeholder: 'Search', type: "search", class: 'form-control search', id: 'srch-term'
+            span.input-group-btn
+              .btn-default
+                button.btn.btn-default type="submit"
+                  i.fa.fa-search
+      li.list-inline-item = link_to 'Reset Filters', programs_information_index_path, class: "btn btn-default", role: "button"
+
+  .row
+    .col-md-12
+      = render 'locations_list', locals: { results: @results }
