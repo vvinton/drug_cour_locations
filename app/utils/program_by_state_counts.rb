@@ -1,7 +1,7 @@
 require 'rgb'
 
 class ProgramByStateCounts
-  attr_accessor :counts, :states, :program_types, :totals, :all
+  attr_accessor :counts, :states, :program_types, :totals, :all, :totals_by_type
 
   class << self
     def metrics
@@ -9,13 +9,14 @@ class ProgramByStateCounts
       helper.run
       helper.color_code
       {
-        program_types: helper.program_types.sort,
-        counts:        helper.counts,
-        total:         helper.totals,
-        states:        helper.totals.keys.sort,
-        coordinators:  helper.state_coordinators,
-        color_code:    helper.color_code,
-        all:           helper.all
+        program_types:  helper.program_types.sort,
+        counts:         helper.counts,
+        totals:         helper.totals,
+        totals_by_type: helper.totals_by_type,
+        states:         helper.totals.keys.sort,
+        coordinators:   helper.state_coordinators,
+        color_code:     helper.color_code,
+        all:            helper.all
       }
     end
 
@@ -27,6 +28,7 @@ class ProgramByStateCounts
 
   def initialize
     @counts = {}
+    @totals_by_type = {}
     @states = []
     @program_types = []
     @totals = {}
@@ -67,7 +69,7 @@ class ProgramByStateCounts
       state = pi['state']
       state = state.strip
       program_type = pi['program_type']
-      program_type = 'Other' if program_type.nil?
+      program_type = 'Other' if program_type.blank?
       program_type = 'Other' if program_type.to_s.downcase.include?('other')
       program_type = program_type.strip
       @counts[state] = {} if @counts[state].nil?
@@ -75,12 +77,30 @@ class ProgramByStateCounts
       @program_types << program_type
       @counts[state][program_type] = 0 if @counts[state][program_type].nil?
       @counts[state][program_type] += 1
+      @totals_by_type[program_type] = 0 if @totals_by_type[program_type].nil?
+      @totals_by_type[program_type] += 1
       @totals[state] = 0 if @totals[state].nil?
       @totals[state] += 1
       @all[program_type] = 0 if @all[program_type].nil?
       @all[program_type] += 1
+      @states = @states.uniq
+      @program_types = @program_types.uniq
     end
-    @program_types = @program_types.uniq!
+    ensure_states_present_with_zero_counts
+  end
+
+  def ensure_states_present_with_zero_counts
+    states_list.each do |state|
+      set_zero_count_if_required(state)
+    end
+  end
+
+  def set_zero_count_if_required(state)
+    @counts[state] = {} unless @counts.dig(state).present?
+    @totals[state] = 0 unless @totals.dig(state).present?
+    @program_types.each do |program_type|
+      @counts[state][program_type] = 0 unless @counts.dig(state, program_type).present?
+    end
   end
 
   def color_code

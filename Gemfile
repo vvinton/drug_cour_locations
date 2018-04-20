@@ -44,6 +44,7 @@ gem 'retryable'
 gem 'rgeo'
 gem 'd3-rails'
 gem 'rgb'
+gem 'bootstrap4-kaminari-views'
 # gem 'webpacker'
 
 # used to create a temp cache to store items when doing things like fixtures.

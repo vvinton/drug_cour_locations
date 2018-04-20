@@ -18,9 +18,8 @@ html
       = render 'layouts/header'
       = yield
     footer
-    = render partial: 'layouts/footer'
-
-
+      = render partial: 'layouts/footer'
+    = render 'layouts/search_box'
     script
       = yield :javascript
     footer
