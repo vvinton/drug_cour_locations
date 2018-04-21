@@ -1,0 +1,27 @@
+
+.container-fluid
+  footer
+    .row
+      .col-md-11
+        .copyright-section
+          | Copyright 2018 American University.
+      .col-md-1
+        .login-section
+          - if current_user
+            .collapse.navbar-collapse.my-nav-menu
+               ul.nav.navbar-nav.navbar-right
+                 li.dropdown
+                   button.btn.btn-default.dropdown-toggle data-toggle="dropdown" type="button"
+                     #{current_user.email}
+                     span.caret
+                   ul.dropdown-menu
+                     li
+                       a href="/" Home
+                     li
+                       a href="/statistic" DB Statistics
+                     li
+                       a href="/imports" Upload MDB
+                     li
+                       = link_to "Logout", destroy_user_session_path, "method" => "delete"
+          - else
+            = link_to 'Login', user_session_path

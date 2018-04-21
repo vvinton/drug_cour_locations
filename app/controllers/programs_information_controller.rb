@@ -1,6 +1,5 @@
 class ProgramsInformationController < ApplicationController
   ActionController::Parameters.permit_all_parameters = true
-
   before_action :is_admin?, only: %i[edit update]
   before_action :find_program_information, only: %i[edit update]
 
