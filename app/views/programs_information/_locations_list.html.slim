@@ -1,3 +1,4 @@
+link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"
 table.table.table-condensed style="margin-right: 5px;"
   thead
     tr
@@ -10,7 +11,7 @@ table.table.table-condensed style="margin-right: 5px;"
       th State Coordinator
       - if current_user && current_user.role.name == 'admin'
         th Edit
-  tbody
+  tbody#myTable
     - @results.each do |result|
       tr id="program_information_#{result.id}"
         td.text-center
@@ -52,4 +53,6 @@ table.table.table-condensed style="margin-right: 5px;"
 
 .row
   .col-md-12.text-center
-    = paginate @results, remote: true, window: 7, theme: 'twitter-bootstrap-4'
+    ul#myPager.pagination.pagination-large
+
+
