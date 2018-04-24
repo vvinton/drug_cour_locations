@@ -25,7 +25,7 @@ module ProgramsInformationHelper
     ''
   end
 
-  def link_to_facet(url_param_name, result_name, result_count = nil, highlight = false)
+  def link_to_facet(url_param_name, result_name, result_count = nil, highlight = false, additional_class_names = "")
     params_string = CGI.unescape(
       if checked = @query[url_param_name].include?(result_name)
         @query.merge(url_param_name => (@query[url_param_name] - [result_name]))
@@ -35,9 +35,9 @@ module ProgramsInformationHelper
     )
     caption = result_name + (result_count ? " (#{result_count})" : '')
     if checked && highlight
-      content_tag(:strong){link_to(caption, "/programs_information?#{params_string}")}
+      content_tag(:strong){link_to(caption, "/programs_information?#{params_string}", class: "#{additional_class_names}")}
     else
-      link_to(caption, "/programs_information?#{params_string}")
+      link_to(caption, "/programs_information?#{params_string}", class: "#{additional_class_names}")
     end
   end
 
@@ -48,26 +48,33 @@ module ProgramsInformationHelper
     link_to(caption, "/programs_information?#{params_string}")
   end
 
-  def link_to_csv_export
+  def link_to_csv_export(opts = {})
+    opts[:text]   = opts[:text] || 'Download with current filters'
+    opts[:class]  = opts[:class] || 'csv-export-link'
     params_string = CGI.unescape(@query.to_query)
-    link_to('Download with current filters', "/programs_information.csv?#{params_string}", id: 'csv-export-link')
+    link_to(opts[:text], "/programs_information.csv?#{params_string}", class: opts[:class], id: opts[:id])
   end
 
-  def link_to_all_download
+  def link_to_all_download(opts = {})
+    opts[:text]   = opts[:text] || 'Download everything'
+    opts[:id]     = opts[:id] || 'csv-export-all-link'
     params_string = CGI.unescape(@query.to_query)
-    link_to('Download everything', "/programs_information.csv", id: 'csv-export-all-link')
+    link_to(opts[:text], "/programs_information.csv", id: opts[:id], class: opts[:class])
   end
 
-  def link_to_nearbys_csv_export
+  def link_to_nearbys_csv_export(opts = {})
+    opts[:text]  = opts[:text] || 'Download CSV'
+    opts[:id]    = opts[:id] || 'csv-export-link'
+    opts[:class] = opts[:class] || 'btn btn-default'
     params_string = CGI.unescape(@query.merge({lat: @center[:lat], lng: @center[:lng]}).to_query)
-    link_to('Download CSV', "nearbys.csv?#{params_string}", class: "btn btn-default", role: "button", id: 'csv-export-link')
+    link_to(opts[:text], "nearbys.csv?#{params_string}", class: opts[:class], role: "button", id: opts[:id])
   end
 
   def view_option_title
     if @query[:v].size > 1
-     'Map & List'
+     'Filters '
     else
-      @query[:v].first || 'Map & List'
+      @query[:v].first || 'Filters '
     end
   end
 

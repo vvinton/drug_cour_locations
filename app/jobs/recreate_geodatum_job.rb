@@ -8,6 +8,6 @@ class RecreateGeodatumJob < ApplicationJob
         GeoDatum.create_from_program_information(pi)
       end
     end
-    RecalculateZipMapJob.new.perform_async
+    RecalculateZipMapJob.new.perform
   end
 end

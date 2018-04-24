@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title Drug Treatment Courts Information
+    meta name="charset" content="utf-8"
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700|Merriweather:400,700,900" rel="stylesheet" type="text/css"
+
+    = javascript_include_tag 'application'
+    script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.2/velocity.min.js"
+    script src="https://d3js.org/topojson.v2.min.js"
+    = stylesheet_link_tag    'application', media: 'all'
+
+    = csrf_meta_tags
+  body
+    #app
+      = render 'layouts/header'
+      = yield
+    footer
+      = render partial: 'layouts/footer'
+    = render 'layouts/search_box'
+    script
+      = yield :javascript
+    footer

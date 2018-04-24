@@ -19,13 +19,13 @@ class MdbImportJob < ApplicationJob
     start_time = Time.now
     database["Program Information"].each do |row|
       begin
-        pi = ProgramInformation.new(program_name: clean_row_item(row[:"Program Name"]),
-                                    court_name: clean_row_item(row[:"Court Name"]),
-                                    operational_status: clean_row_item(row[:"Operational Status"]),
-                                    case_type: row[:"Case Type"],
+        pi = ProgramInformation.new(program_name:        clean_row_item(row[:"Program Name"]),
+                                    court_name:          clean_row_item(row[:"Court Name"]),
+                                    operational_status:  clean_row_item(row[:"Operational Status"]),
+                                    case_type:           row[:"Case Type"],
                                     implementation_date: row[:"Implementation Date"],
-                                    program_type: clean_row_item(row[:"Program Type"]),
-                                    address: row[:"Address"],
+                                    program_type:        clean_row_item(row[:"Program Type"]),
+                                    address:             row[:"Address"],
                                     city: clean_row_item(row[:"City"]),
                                     state: clean_row_item(row[:"State"]),
                                     zip_code: row[:"Zip Code"],
@@ -88,7 +88,6 @@ class MdbImportJob < ApplicationJob
         next
       end
     end
-    
-    RecreateGeodatumJob.perform_async
+    RecreateGeodatumJob.new.perform
   end
 end

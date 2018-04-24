@@ -3,7 +3,25 @@ require 'mdb'
 require 'moneta'
 require 'csv'
 
+namespace :setup_app do
+  desc 'reindex'
+  task :reindex, [:file_path] => :environment do |_task, args|
+    ProgramInformation.reindex
+  end
+end
+
 namespace :mdb do
+  desc 'import an MDB file and perform all actions'
+  task :import,  [:file_path] => :environment do |_task, args|
+    import = Import.new
+    file = File.open("#{Rails.root}/lib/csv/mdb_db.mdb")
+    import.mdb = file
+    import.save
+    helper = MdbImportJob.new
+    puts "Starting performing Job"
+    helper.perform(import.id)
+  end
+
   desc 'export to CSV all tables'
   task :export_to_csv, [:file_path] => :environment do |_task, args|
     database = Mdb.open(args.file_path)
