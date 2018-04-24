@@ -6,5 +6,6 @@ class CourtsByTypeController < ApplicationController
     @program_types = results[:program_types]
     @states = results[:total].keys.sort
     @all = results[:all].sort_by{ |k, v| k }.to_h
+    render json: results
   end
 end

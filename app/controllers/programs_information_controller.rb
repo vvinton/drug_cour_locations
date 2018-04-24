@@ -4,20 +4,13 @@ class ProgramsInformationController < ApplicationController
   before_action :find_program_information, only: %i[edit update]
 
   def index
-    compose_query
-    set_map_results
-    if request.format == 'text/csv'
-      csv_results_query
-    else
-      regular_results_query
-    end
-    states = @results.map(&:state).uniq
+     @results  = Search.get_search(params)
+    states  = @results.map(&:state).uniq
     @state_coordinators = {}
     StateCoordinator.where(state: states).each do |sc|
       @state_coordinators[sc.state] = sc
     end
   end
-
   def set_map_results
     @all_results = ProgramInformation.search(@search.to_s,
                                              where: @conditions,
