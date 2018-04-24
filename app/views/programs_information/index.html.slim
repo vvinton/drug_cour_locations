@@ -1,0 +1,6 @@
+.container-fluid.search-area
+  li.list-inline-item = link_to 'Reset Filters', programs_information_index_path, class: "btn btn-default", role: "button"
+
+  .row
+    .col-md-12
+      = render 'locations_list', locals: { results: @results }
