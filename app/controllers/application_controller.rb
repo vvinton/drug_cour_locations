@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   end
 
   def set_search_options
-    @metrics = ProgramByStateCounts.metrics
+    @metrics ||= begin
+      Rails.cache.fetch('court_metrics', expires_in: 12.hours) do
+        ProgramByStateCounts.metrics
+      end
+    end
   end
 end

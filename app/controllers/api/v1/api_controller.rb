@@ -4,15 +4,8 @@ module Api
   module V1
     class ApiController < ApplicationController
       def metrics
-        render json: metrics_data
-      end
-
-      def metrics_data
-        @metrics_data ||= begin
-          Rails.cache.fetch('court_metrics', expires_in: 12.hours) do
-            ProgramByStateCounts.metrics
-          end
-        end
+        set_search_options if @metrics.nil?
+        render json: @metrics
       end
 
       # Renders the state boundaries, which are needed for drawing the USA
