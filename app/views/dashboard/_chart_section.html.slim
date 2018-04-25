@@ -4,10 +4,10 @@
     thead
       th
         a href="javascript:void(0)" data-sort="state" class="sort asc" State
-      th.bar-states
-        | Court Types&nbsp;&nbsp;&nbsp;
-        button.btn.btn-info.btn-sm.btn-clear-selection.hidden
-          | All
+      th.bar-states.form-inline
+        .form-group
+          | Court Types:
+          select.select.form-control.filter-select
       th
         a href="javascript:void(0)" data-sort="total" Total
     tbody
