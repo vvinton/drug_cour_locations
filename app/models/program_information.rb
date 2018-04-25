@@ -8,8 +8,6 @@ class ProgramInformation < ApplicationRecord
 
   accepts_nested_attributes_for :coordinator_information
 
-  searchkick word_start: ['address'], merge_mappings: true, mappings: PROGRAM_MAPPING
-
   class << self
     def searchable_fields
       %i(address state program_type program_name

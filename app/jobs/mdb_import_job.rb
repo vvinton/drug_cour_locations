@@ -65,7 +65,7 @@ class MdbImportJob < ApplicationJob
         next
       end
     end
-    ProgramInformation.reindex
+    # ProgramInformation.reindex
     StateCoordinator.delete_all
     database['State Coordinators'].each do |row|
       begin

@@ -10,7 +10,6 @@ namespace :setup_app do
   end
 end
 
-
 namespace :mdb do
   desc 'import an MDB file and perform all actions'
   task :import,  [:file_path] => :environment do |_task, args|
