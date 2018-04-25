@@ -1,58 +1,96 @@
-link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"
-table.table.table-condensed style="margin-right: 5px;"
-  thead
-    tr
-      th.text-center title="Website link"
-        i.fa.fa-globe
-      th State
-      th County
-      th Court Type
-      th Program Information
-      th State Coordinator
-      - if current_user && current_user.role.name == 'admin'
-        th Edit
-  tbody#myTable
-    - @results.each do |result|
-      tr id="program_information_#{result.id}"
-        td.text-center
-          - if result.website
-            = link_to result.website, target: '_blank' do
-              i.fa.fa-globe.text-primary
-        td = result.state
-        td = result.county
-        td = result.program_type
-        td
-          .program_name
-            = result.program_name
-          .program_address
-            = result.address
-          .program_city_state_zip
-            = city_state_zip(result)
-        td.state_coordinator
-          - state_coordinator = @state_coordinators[result.state]
-          .state_coordinator_name
-            = state_coordinator&.full_name
-          .state_coordinator_title
-            = state_coordinator&.title
-          .state_coordinator_email
-            - if state_coordinator&.email&.to_s&.length.to_i > 0
-              i.fa.fa-envelope
-              = " #{state_coordinator&.email}"
-          .state_coordinator_phone
-            - if state_coordinator&.phone&.to_s&.length.to_i > 0
-              i.fa.fa-phone
-              = state_coordinator&.phone
-        - if current_user && current_user.role.name == 'admin'
-          th
-            = link_to 'edit', edit_programs_information_path(result.id)
-.row.text-center
-  .col-md-12.download-options-area
-    ul.list-inline
-      li.list-inline-item = link_to_csv_export(text: 'Download filtered data to CSV', class: 'list-item')
-      li.list-inline-item = link_to_all_download(class: 'list-item')
+- if @results.length > 0
+  .row.table-top
+    .col
+      .actions
+        = raw(@description)
+    .col
+      .page-entries
+        ul.list-inline.text-right
+          li.list-inline-item
+            a href="#search-box" data-toggle="modal"
+              | Advanced Search
+          li.list-inline-item
+            = link_to 'Reset filters', programs_information_index_path
+          li.list-inline-item
+            = page_entries_info @results, entry_name: 'courts'
+  .row
+    .col
+      table.table.table-striped#programs-list-table
+        thead
+          tr
+            th
+              button.btn.btn-default
+                i.fa.fa-globe title="Website link"
+            th
+              .dropdown
+                button.btn.btn-default.dropdown-toggle dropdown-toggle='true' type='button' id='court-type-table-dropdown' data-toggle='dropdown' aria-haspopup='true' aria-expandable='false'
+                  | State
+                  span.
+                .dropdown-menu aria-labelledby='court-type-table-dropdown'
+                  - @metrics[:states].each do |state|
+                    a.dropdown-item href="/programs_information?states%5B%5D=#{URI.escape(state)}"
+                      | #{state}
+            th
+              button.btn.btn-default
+                | County
+            th
+              .dropdown
+                button.btn.btn-default.dropdown-toggle dropdown-toggle='true' type='button' id='court-type-table-dropdown' data-toggle='dropdown' aria-haspopup='true' aria-expandable='false'
+                  | Court Type
+                .dropdown-menu aria-labelledby='court-type-table-dropdown'
+                  - @metrics[:program_types].each do |program_type|
+                    a.dropdown-item href="/programs_information?program_type%5B%5D=#{URI.escape(program_type)}"
+                      | #{program_type}
 
-.row
-  .col-md-12.text-center
-    ul#myPager.pagination.pagination-large
+            th
+              button.btn.btn-default
+                | Program Information
+            th
+              button.btn.btn-default
+                | State Coordinator
+            - if current_user && current_user.role.name == 'admin'
+              th Edit
+        tbody
+          - @results.each do |result|
+            tr id="program_information_#{result.id}"
+              td.text-center
+                - if result.website
+                  = link_to result.website, target: '_blank' do
+                    i.fa.fa-globe.text-primary
+              td = result.state
+              td = result.county
+              td = result.program_type
+              td
+                .program_name
+                  = result.program_name
+                .program_address
+                  = result.address
+                .program_city_state_zip
+                  = city_state_zip(result)
+              td.state_coordinator
+                - state_coordinator = @state_coordinators[result.state]
+                .state_coordinator_name
+                  = state_coordinator&.full_name
+                .state_coordinator_title
+                  = state_coordinator&.title
+                .state_coordinator_email
+                  - if state_coordinator&.email&.to_s&.length.to_i > 0
+                    i.fa.fa-envelope
+                    = " #{state_coordinator&.email}"
+                .state_coordinator_phone
+                  - if state_coordinator&.phone&.to_s&.length.to_i > 0
+                    i.fa.fa-phone
+                    = clean_csv_phone(state_coordinator&.phone)
+              - if current_user && current_user.role.name == 'admin'
+                th
+                  = link_to 'edit', edit_programs_information_path(result.id)
+      .row.pagination-area
+        .col
+          = paginate @results, theme: 'twitter-bootstrap-4'
+        .col.action-area
+          ul.list-inline.text-right
+            li.list-inline-item = link_to_csv_export(text: 'Download filtered data to CSV', class: 'list-item btn btn-secondary')
+            li.list-inline-item = link_to_all_download(class: 'list-item btn btn-secondary')
 
-
+- else
+  = render partial: 'programs_information/no_search_results'

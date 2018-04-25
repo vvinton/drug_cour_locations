@@ -1,4 +1,4 @@
-table.table.table-striped.datatable
+table.table.table-striped
   thead
     tr
       th State
@@ -20,7 +20,3 @@ table.table.table-striped.datatable
         - @program_types.each do |type|
           td = @counts.dig(state, type).to_i
         td = @total[state]
-
-
-javascript:
-  $('.datatable').DataTable({responsive: true});

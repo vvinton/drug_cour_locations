@@ -4,8 +4,9 @@ class ProgramsInformationController < ApplicationController
   before_action :find_program_information, only: %i[edit update]
 
   def index
-     @results  = Search.get_search(params)
-    states  = @results.map(&:state).uniq
+    @results = SearchHelper.search(params)
+    @description = SearchHelper.description(params)
+    states = @results.map(&:state).uniq
     @state_coordinators = {}
     StateCoordinator.where(state: states).each do |sc|
       @state_coordinators[sc.state] = sc

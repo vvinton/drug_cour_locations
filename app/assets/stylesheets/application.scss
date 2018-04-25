@@ -17,7 +17,6 @@
  */
 @import "bootstrap";
 @import "font-awesome";
-@import "dataTables/extras/dataTables.responsive";
 
 .state-filter {
   min-height: 800px;
@@ -328,4 +327,51 @@ body {
 }
 .login-section {
   float: right;
+}
+
+.notification-card {
+  .notification-title { font-size: 120%; }
+  .notification-icon {
+    font-size: 600%;
+    color: #cccccc;
+    margin-bottom: 50px;
+  }
+  .notification-help {
+    .the-query {
+      color: #83d4ee;
+    }
+  }
+}
+
+.pagination-area {
+  justify-content: center;
+  padding: 20px;
+  .action-area {
+    justify-content: right;
+  }
+}
+
+.list-action-area {
+  justify-content: center;
+  padding: 20px;
+  border-top: 1px solid #cccccc;
+}
+
+.table-top {
+  .actions {
+    font-size: 80%;
+    color: #202020;
+    justify-content: left;
+    padding: 15px 10px 10px 10px;
+    .search-description-parameters {
+      color: #83d4ee;
+    }
+  }
+  .page-entries {
+    font-size: 80%;
+    color: #202020;
+    justify-content: right;
+    text-align: right;
+    padding: 15px 10px 10px 10px;
+  }
 }

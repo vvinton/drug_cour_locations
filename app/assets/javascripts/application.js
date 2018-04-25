@@ -15,7 +15,5 @@
 //= require popper
 //= require jquery_ujs
 //= require d3
-//= require dataTables/jquery.dataTables
-//= require dataTables/extras/dataTables.responsive
 //= require bootstrap-sprockets
 //= require_tree .
