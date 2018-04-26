@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180329142503) do
+ActiveRecord::Schema.define(version: 20180426123027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,8 +27,6 @@ ActiveRecord::Schema.define(version: 20180329142503) do
     t.datetime "updated_at", null: false
     t.index ["program_information_id"], name: "index_coordinator_informations_on_program_information_id"
   end
-
-
 
   create_table "geo_data", id: :serial, force: :cascade do |t|
     t.jsonb "data"
@@ -141,6 +139,13 @@ ActiveRecord::Schema.define(version: 20180329142503) do
     t.string "full_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "settings", id: :serial, force: :cascade do |t|
+    t.string "var", null: false
+    t.text "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "state_coordinators", id: :serial, force: :cascade do |t|
