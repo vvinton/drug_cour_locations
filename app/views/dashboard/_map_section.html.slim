@@ -3,7 +3,17 @@
     #us-map-legend
     #us-map
     #us-map-popup.hidden
-      h1.state
-      p.description
-      h2 Courts by Type
-      ul.list-data
+      .row
+        .col-4
+          h1.state
+        .col-8
+          p.description
+      .row
+        .col
+          h2 Courts by Type
+      .row
+        .col
+          ul.list-data
+      .row
+        .col.text-center.mt-5
+          = link_to 'Download', '/programs_information.csv', class: 'btn btn-primary', id: '#popup-download-link'

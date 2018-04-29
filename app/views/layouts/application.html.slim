@@ -16,6 +16,7 @@ html
   body
     #app
       = render 'layouts/header'
+      = render 'layouts/rails_flash_partial', locals: { flash: flash }
       = yield
     footer
       = render partial: 'layouts/footer'

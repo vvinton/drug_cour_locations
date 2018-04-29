@@ -12,15 +12,12 @@
           li.list-inline-item
             = link_to 'Reset filters', programs_information_index_path
           li.list-inline-item
-            = page_entries_info @results, entry_name: 'courts'
+            = page_entries_info @results, entry_name: 'programs'
   .row
     .col
       table.table.table-striped#programs-list-table
         thead
           tr
-            th
-              button.btn.btn-default
-                i.fa.fa-globe title="Website link"
             th
               .dropdown
                 button.btn.btn-default.dropdown-toggle dropdown-toggle='true' type='button' id='court-type-table-dropdown' data-toggle='dropdown' aria-haspopup='true' aria-expandable='false'
@@ -70,17 +67,17 @@
               td.state_coordinator
                 - state_coordinator = @state_coordinators[result.state]
                 .state_coordinator_name
-                  = state_coordinator&.full_name
+                  = state_coordinator.dig('full_name')
                 .state_coordinator_title
-                  = state_coordinator&.title
+                  = state_coordinator.dig('title')
                 .state_coordinator_email
-                  - if state_coordinator&.email&.to_s&.length.to_i > 0
+                  - if state_coordinator.dig('email')&.to_s&.length.to_i > 0
                     i.fa.fa-envelope
-                    = " #{state_coordinator&.email}"
+                    = " #{state_coordinator.dig('email')}"
                 .state_coordinator_phone
-                  - if state_coordinator&.phone&.to_s&.length.to_i > 0
+                  - if state_coordinator.dig('phone')&.to_s&.length.to_i > 0
                     i.fa.fa-phone
-                    = clean_csv_phone(state_coordinator&.phone)
+                    = clean_csv_phone(state_coordinator.dig('phone'))
               - if current_user && current_user.role.name == 'admin'
                 th
                   = link_to 'edit', edit_programs_information_path(result.id)
@@ -89,7 +86,8 @@
           = paginate @results, theme: 'twitter-bootstrap-4'
         .col.action-area
           ul.list-inline.text-right
-            li.list-inline-item = link_to_csv_export(text: 'Download filtered data to CSV', class: 'list-item btn btn-secondary')
+            - unless @description.to_s.include?('Showing all')
+              li.list-inline-item = link_to_csv_export(text: 'Download selected data to CSV', class: 'list-item btn btn-secondary')
             li.list-inline-item = link_to_all_download(class: 'list-item btn btn-secondary')
 
 - else

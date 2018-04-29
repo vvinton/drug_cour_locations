@@ -14,6 +14,7 @@ class ProgramByStateCounts
         totals:         helper.totals,
         totals_by_type: helper.totals_by_type,
         states:         helper.totals.keys.sort,
+        downloads:      helper.download_links,
         coordinators:   helper.state_coordinators,
         color_code:     helper.color_code,
         all:            helper.all
@@ -37,6 +38,17 @@ class ProgramByStateCounts
 
   def all_data
     @all_data ||= ProgramInformation.all.to_a.map { |x| x.attributes.to_hash }
+  end
+
+  # adds the download links to the file
+  def download_links
+    @download_links ||= begin
+      dl = {}
+      @totals.keys.sort.each do |state|
+        dl[state] = "/programs_information.csv?states%5B%5D=#{state}"
+      end
+      dl
+    end
   end
 
   def state_coordinators
@@ -72,6 +84,7 @@ class ProgramByStateCounts
       program_type = 'Other' if program_type.blank?
       program_type = 'Other' if program_type.to_s.downcase.include?('other')
       program_type = program_type.strip
+      program_type = program_type.gsub(/ Court$/, '')
       @counts[state] = {} if @counts[state].nil?
       @states << state
       @program_types << program_type
@@ -110,13 +123,17 @@ class ProgramByStateCounts
       top_value_increment = (top_value / 10).to_i
       @totals.keys.each do |state|
         value = @totals[state].to_i
-        color_index = (value.to_f / top_value_increment.to_f).floor
-        percentile = (value.to_f / top_value.to_f).floor
+        color_index = (value.to_f / top_value_increment.to_f).floor rescue 0
+        percentile = (value.to_f / top_value.to_f).floor rescue 0
         color_code[state] = {color: color_map[color_index], percentile: percentile, description: "#{percentile}% of the largest drug treatment court state" }
       end
       states_list.each do |state|
         unless color_code[state]
-          color_code[state] = {color: '#f1f1f1', percentile: 0, description: "0% of the largest drug treatment court state"}
+          color_code[state] = {
+            color: '#f1f1f1',
+            percentile: 0,
+            description: "0% of the largest drug treatment court state"
+          }
         end
       end
       color_code

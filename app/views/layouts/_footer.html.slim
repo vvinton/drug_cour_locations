@@ -9,17 +9,17 @@
         .login-section
           - if current_user
             .dropdown
-               button.btn.btn-default.dropdown-toggle data-toggle="dropdown" type="button"
+               button.btn.btn-default.btn-sm.dropdown-toggle data-toggle='dropdown' type='button'
                  | #{current_user.email}
                  span.caret
                .dropdown-menu
                  li.dropdown-item
-                   a href="/" Home
+                   a href='/' Home
                  li.dropdown-item
-                   a href="/statistic" DB Statistics
+                   a href='/statistic' Statistics
                  li.dropdown-item
-                   a href="/imports" Upload MDB
+                   a href='/imports' Import
                  li.dropdown-item
-                   = link_to "Logout", destroy_user_session_path, "method" => "delete"
+                   = link_to 'Logout', destroy_user_session_path, 'method' => 'delete'
           - else
             = link_to 'Login', user_session_path

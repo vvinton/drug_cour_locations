@@ -1,0 +1,2 @@
+class BjaGrant < ApplicationRecord
+end

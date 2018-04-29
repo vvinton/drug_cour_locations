@@ -49,6 +49,7 @@ gem 'd3-rails'
 gem 'ledermann-rails-settings'
 gem 'rgb'
 gem 'bootstrap4-kaminari-views'
+gem 'roo'
 # gem 'webpacker'
 
 # used to create a temp cache to store items when doing things like fixtures.
@@ -68,6 +69,14 @@ group :development do
   gem 'listen'
   gem 'web-console', '>= 3.3.0'
   gem 'foreman'
+end
+
+group :test do
+  gem 'database_cleaner'
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'chromedriver-helper'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

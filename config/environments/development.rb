@@ -45,6 +45,9 @@ Rails.application.configure do
   # number of complex assets.
   config.assets.debug = true
 
+  # Web console in develoment mode should support all IPs
+  config.web_console.whitelisted_ips = '172.18.0.0/16'
+
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 

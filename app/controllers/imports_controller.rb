@@ -3,10 +3,10 @@ class ImportsController < ApplicationController
   def create
     @import_file = Import.new(import_params)
     if @import_file.save
-      MdbImportJob.perform_later(@import_file.id)
-      flash[:notice] = "Successfuly upload"
+      SetupImportJob.perform_later(@import_file.id)
+      flash[:notice] = "Successfuly uploaded. Import will begin momentarily."
     else
-      flash[:error] = "Something went wrong"
+      flash[:error]  = "Something went wrong"
     end
     redirect_to root_path
   end

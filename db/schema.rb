@@ -10,10 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180426123027) do
+ActiveRecord::Schema.define(version: 20180427182556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bja_grants", force: :cascade do |t|
+    t.integer "fiscal_year"
+    t.string "program_office"
+    t.string "state"
+    t.string "grantee"
+    t.string "solicitation_title"
+    t.string "award_number"
+    t.string "gms_award_status"
+    t.string "fmis2_award_status"
+    t.datetime "award_date"
+    t.datetime "project_period_start"
+    t.datetime "project_period_end"
+    t.string "grant_mgr_last"
+    t.string "grant_mgr_first"
+    t.string "project_title"
+    t.string "poc_name"
+    t.string "poc_email"
+    t.string "fpoc_name"
+    t.string "fpoc_email"
+    t.string "gms_fpoc_name"
+    t.string "gms_fpoc_email"
+    t.string "tribal"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "coordinator_informations", id: :serial, force: :cascade do |t|
     t.integer "program_information_id"
@@ -58,17 +84,17 @@ ActiveRecord::Schema.define(version: 20180426123027) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "judge_informaions", id: :serial, force: :cascade do |t|
+  create_table "judge_informations", id: :serial, force: :cascade do |t|
     t.integer "program_information_id"
     t.string "last_name"
-    t.string "firt_name"
+    t.string "first_name"
     t.string "email"
     t.string "title"
     t.string "phone"
     t.string "current_contact"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["program_information_id"], name: "index_judge_informaions_on_program_information_id"
+    t.index ["program_information_id"], name: "index_judge_informations_on_program_information_id"
   end
 
   create_table "jurisdiction_informations", id: :serial, force: :cascade do |t|
