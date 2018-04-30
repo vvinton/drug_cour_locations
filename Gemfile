@@ -50,6 +50,7 @@ gem 'ledermann-rails-settings'
 gem 'rgb'
 gem 'bootstrap4-kaminari-views'
 gem 'roo'
+gem 'sidekiq'
 # gem 'webpacker'
 
 # used to create a temp cache to store items when doing things like fixtures.
