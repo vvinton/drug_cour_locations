@@ -18,7 +18,7 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  config.cache_store = :redis_store, ENV['REDIS_PROVIDER'], { expires_in: 12.hours } if ENV['REDIS_PROVIDER'].present?
+  config.cache_store = :redis_store, ENV['REDIS_URL'], { expires_in: 12.hours } if ENV['REDIS_URL'].present?
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
