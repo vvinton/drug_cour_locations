@@ -45,10 +45,13 @@ class ProgramInformationSpreadsheetImportJob < SpreadsheetImportJob
     program     = set_program_information(hash_row)
     coordinator = set_coordinator_information(program, hash_row)
     judge       = set_judge_information(program, hash_row)
+    program = nil
+    coordinator = nil
+    judge = nil
   end
 
   def set_program_information(hash_row)
-    program = ProgramInformation.where(id: hash_row['id'])&.first
+    program = ProgramInformation.where(id: hash_row['id']).limit(1)&.first
     program = ProgramInformation.new(id: hash_row['id'].to_i) if program.nil?
     program.update_attributes(program_from_hash_row(hash_row))
     program
@@ -56,7 +59,7 @@ class ProgramInformationSpreadsheetImportJob < SpreadsheetImportJob
 
   def set_coordinator_information(program, hash_row)
     if has_coordinator_information?(hash_row)
-      coordinator = program.coordinator_information&.first
+      coordinator = program.coordinator_information.limit(1)&.first
       coordinator = program.coordinator_information.new if coordinator.nil?
       coordinator.update_attributes(coordinator_from_hash_row(hash_row))
       coordinator
@@ -68,7 +71,7 @@ class ProgramInformationSpreadsheetImportJob < SpreadsheetImportJob
 
   def set_judge_information(program, hash_row)
     if has_judge_information?(hash_row)
-      judge = program.judge_information&.first
+      judge = program.judge_information.limit(1)&.first
       judge = program.judge_information.new if judge.nil?
       judge.update_attributes(judge_from_hash_row(hash_row))
       judge
@@ -90,7 +93,7 @@ class ProgramInformationSpreadsheetImportJob < SpreadsheetImportJob
 
   def coordinator_from_hash_row(hash_row)
     hsh = hash_row.slice(*coordinator_attribute_fields)
-    hsh.keys.each do |key|
+    hsh.each_key do |key|
       hsh[key.gsub('coordinator_', '')] = hsh[key]
       hsh.delete(key)
     end
@@ -108,7 +111,7 @@ class ProgramInformationSpreadsheetImportJob < SpreadsheetImportJob
 
   def judge_from_hash_row(hash_row)
     hsh = hash_row.slice(*judge_attribute_fields)
-    hsh.keys.each do |key|
+    hsh.each_key do |key|
       hsh[key.gsub('judge_', '')] = hsh[key]
       hsh.delete(key)
     end
