@@ -1,2 +1,2 @@
-web:    bundle exec rails server -p 3000 -b 0.0.0.0
-sidekiq: bundle exec sidekiq -t 2
+web: bundle exec rails server -b 0.0.0.0 -p 3000
+sidekiq: bundle exec sidekiq
