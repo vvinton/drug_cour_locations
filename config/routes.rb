@@ -1,9 +1,8 @@
 require 'sidekiq/web'
 # Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
 
-mount Sidekiq::Web => '/admin/sidekiq'
-
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/admin/sidekiq'
   devise_for :users
   resources :dashboard
   resources :programs_information
