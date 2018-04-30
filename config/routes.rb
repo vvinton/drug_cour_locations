@@ -1,3 +1,10 @@
+require 'sidekiq/web'
+Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
+
+authenticate :user do
+  mount Sidekiq::Web => '/admin/sidekiq'
+end
+
 Rails.application.routes.draw do
   devise_for :users
   resources :dashboard
