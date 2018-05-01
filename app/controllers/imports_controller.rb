@@ -3,6 +3,7 @@ class ImportsController < ApplicationController
   def create
     @import_file = Import.new(import_params)
     if @import_file.save
+      @import_file.save_to_google_drive
       SetupImportJob.perform_later(@import_file.id)
       flash[:notice] = "Successfuly uploaded. Import will begin momentarily."
     else
