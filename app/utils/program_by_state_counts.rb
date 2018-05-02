@@ -66,7 +66,6 @@ class ProgramByStateCounts
         state_coordinators[sc.state][:zip]        = sc&.zip
         state_coordinators[sc.state][:email]      = sc&.email
         state_coordinators[sc.state][:phone]      = formatted_phone(sc&.phone)
-        state_coordinators[sc.state][:website]    = sc&.website
       end
       state_coordinators
     end
@@ -141,7 +140,9 @@ class ProgramByStateCounts
   end
 
   def base_color
-    @base_color ||= RGB::Color.from_rgb_hex('#004fa3')
+    # old color base #004fa3
+    # #005099
+    @base_color ||= RGB::Color.from_rgb_hex('#005099')
   end
 
   # The breakdown of the maps values

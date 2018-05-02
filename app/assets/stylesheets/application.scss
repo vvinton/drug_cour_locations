@@ -69,6 +69,7 @@
 @media (max-width: 1024px) {
   .pagination .page.away-7 { display: none; }
   .pagination .page.away-6 { display: none; }
+  #how-to-use { display: none; }
 }
 
 @media (max-width: 900px) {
@@ -110,7 +111,8 @@ body {
   cursor: pointer;
 }
 .state-path:hover {
-  fill: #c4122e;
+  // old color #c4122e;
+  fill: #414547;
 }
 
 .state-borders {
@@ -177,7 +179,7 @@ body {
   right: 0;
   top: 0;
   h1 {
-    font-size: 20px;
+    font-size: 18px;
     margin: 0;
   }
   p.description {
@@ -189,25 +191,16 @@ body {
     margin: 0;
   }
   .list-data {
-    @extend .list-inline;
-    @extend .row;
+    @extend .list-group;
     margin: 0;
     padding: 0;
     li {
-      @extend .list-inline-item;
-      width: 30%;
-      border: 1px solid #cccccc;
-      border-top: 1px solid #007bff;
-      text-align: center;
-      padding: 5px 5px 10px 5px;
-      margin: 3px 0;
-      font-size: 12px;
-      line-height: 14px;
+      @extend .list-group-item;
+      padding: 0.3rem 0.4rem;
       span.count {
-        display: block;
-        margin-top: 10px;
-        font-weight: 500;
-        font-size: 200%;
+        float: right;
+        @extend .badge;
+        @extend .badge-secondary;
       }
     }
   }
@@ -296,7 +289,7 @@ body {
     width: 250px;
   }
   #us-map-popup .list-data li {
-    width: 28%;
+    // width: 28%;
   }
 }
 
@@ -378,4 +371,25 @@ body {
 
 #grants-list-table {
   font-size: 10px;
+}
+
+.list-count-card {
+  text-align: center;
+  justify-content: center;
+  .icon {
+    font-size: 400%;
+    color: #83d4ee;
+    text-align: center;
+  }
+  .count {
+    font-size: 300%;
+  }
+  .description {
+    font-size: 100%;
+    color: #cccccc;
+  }
+}
+
+#how-to-use {
+  color: #007bff;
 }

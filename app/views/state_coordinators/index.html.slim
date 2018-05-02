@@ -1,38 +1,29 @@
 
 
-table#state-coordinators-table.table.table-striped.datatable
+table#state-coordinators-table.table.table-striped
   thead
     tr
-      th Agency 
       th State
+      th Agency
       th Contact
       th Location
       th Phone
       th Email
-      th Website
   tbody
-    - @coordinators.each do |coordinator|
-      - next if coordinator.current_contact.to_s.blank? || coordinator.current_contact.to_s == "0"
+    - @all_state_coordinators.keys.each do |state|
+      - coordinator = @all_state_coordinators[state]
       tr
-        td = coordinator.agency
-        td = coordinator.state
+        td = coordinator.dig('state')
+        td = coordinator['agency']
         td
           .name
-            = "#{coordinator.first_name} #{coordinator.last_name}"
+            = "#{coordinator['first_name']} #{coordinator['last_name']}"
           .title
-            = "#{coordinator.title}"
+            = "#{coordinator['title']}"
         td
           .address
-            = coordinator.address
+            = coordinator['address']
           .city-state-zip
-            = "#{coordinator.city}, #{coordinator.state}, #{coordinator.zip}"
-        td = coordinator.phone
-        td = coordinator.email
-        td
-          - if coordinator.website.blank?
-            | Not available
-          - else
-            = coordinator.website
-
-javascript:
-  $('.datatable').DataTable({responsive: true});
+            = "#{coordinator['city']}, #{coordinator['state']}, #{coordinator['zip']}"
+        td = coordinator['phone']
+        td = coordinator['email']

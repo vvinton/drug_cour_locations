@@ -8,7 +8,7 @@ end
 
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 
-gem 'rails', '~> 5.1.4'
+gem 'rails', '~> 5.2'
 gem 'pg'
 gem 'activerecord-postgis-adapter'
 gem 'puma', '~> 3.0'
@@ -48,6 +48,8 @@ gem 'rgb'
 gem 'bootstrap4-kaminari-views'
 gem 'roo'
 gem 'sidekiq'
+gem 'sidekiq-failures'
+gem "aws-sdk-s3", require: false
 # gem 'webpacker'
 
 # used to create a temp cache to store items when doing things like fixtures.

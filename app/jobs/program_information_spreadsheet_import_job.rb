@@ -93,7 +93,8 @@ class ProgramInformationSpreadsheetImportJob < SpreadsheetImportJob
 
   def coordinator_from_hash_row(hash_row)
     hsh = hash_row.slice(*coordinator_attribute_fields)
-    hsh.each_key do |key|
+    coordinator_keys_list = hsh.keys
+    coordinator_keys_list.each do |key|
       hsh[key.gsub('coordinator_', '')] = hsh[key]
       hsh.delete(key)
     end
@@ -111,7 +112,8 @@ class ProgramInformationSpreadsheetImportJob < SpreadsheetImportJob
 
   def judge_from_hash_row(hash_row)
     hsh = hash_row.slice(*judge_attribute_fields)
-    hsh.each_key do |key|
+    judge_key_list = hsh.keys
+    judge_key_list.each do |key|
       hsh[key.gsub('judge_', '')] = hsh[key]
       hsh.delete(key)
     end

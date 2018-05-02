@@ -39,8 +39,13 @@ class SpreadsheetImportJob < ApplicationJob
     before_processing_point
     spreadsheet.each_with_pagename do |name, sheet|
       next unless name == sheet_name
+      puts "START sheet:#{name} rows:#{sheet.last_row}"
       handle_sheet(sheet)
+      puts "END sheet:#{name} rows:#{sheet.last_row}"
     end
+    Rails.cache.clear
+    Rails.cache.clear('court_metrics')
+    Rails.cache.clear('state_coordinators')
     after_processing_point
   end
 
@@ -77,7 +82,11 @@ class SpreadsheetImportJob < ApplicationJob
   end
 
   def get_spreadsheet
-    Roo::Spreadsheet.open(@record.mdb.path)
+    file = Tempfile.new(@record.file.filename.to_s)
+    file.binmode
+    file.write(@record.file.blob.download)
+    file.flush
+    Roo::Spreadsheet.open(file, extension: :xlsx)
   end
 
   def handle_incorrect_spreadsheet
@@ -90,6 +99,18 @@ class SpreadsheetImportJob < ApplicationJob
 
   def program_information_match_term
     'ID'
+  end
+
+  def state_coordinator_match_term
+    'State'
+  end
+
+  def potential_match_terms
+    [
+      program_information_match_term,
+      state_coordinator_match_term,
+      grant_match_term
+    ]
   end
 
   def get_first_row_first_column

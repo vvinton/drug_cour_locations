@@ -5,9 +5,9 @@ class SetupImportJob < SpreadsheetImportJob
 
   def perform(import_file_id)
     @record = Import.find import_file_id
-    if @record.mdb_content_type.to_s.include?('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    if @record.file.content_type.to_s.include?('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
       handle_spreadsheet_import_record
-    elsif @record.mdb_content_type.to_s.include?('vnd.ms-access')
+    elsif @record.file.content_type.to_s.include?('vnd.ms-access')
       handle_mdb_database_import_record
     else
       raise UnsupportedFileFormat.new 'Not a supported file format (modern Excel spreadsheet or older Microsoft Access file) not detected.'
@@ -16,9 +16,10 @@ class SetupImportJob < SpreadsheetImportJob
 
   def handle_spreadsheet_import_record
     frfc = get_first_row_first_column
-    raise StandardError.new 'Not a supported spreadsheet format, no \'ID\' or \'Fiscal Year\' in first row first column' unless ['ID', 'Fiscal Year'].include?(frfc)
-    ProgramInformationSpreadsheetImportJob.perform_later(@record.id) if frfc == 'ID'
-    GrantImportJob.perform_later(@record.id)              if frfc == 'Fiscal Year'
+    raise StandardError.new 'Not a supported spreadsheet format, no identified first row first column value' unless potential_match_terms.include?(frfc)
+    ProgramInformationSpreadsheetImportJob.perform_later(@record.id) if frfc == program_information_match_term
+    GrantImportJob.perform_later(@record.id)                         if frfc == grant_match_term
+    StateCoordinatorImportJob.perform_later(@record.id)              if frfc == state_coordinator_match_term
   end
 
   def handle_mdb_database_import_record

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       get :color_legend, to: 'api#color_legend'
     end
   end
+  get :clear_cache,        to: 'dashboard#clear_cache'
   get :state_coordinators, to: 'state_coordinators#index'
   get :bja,                to: 'bja#index'
   get :courts_by_type,     to: 'courts_by_type#index'

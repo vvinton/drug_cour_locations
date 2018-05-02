@@ -20,6 +20,8 @@
                  li.dropdown-item
                    a href='/imports' Import
                  li.dropdown-item
+                   a href='/clear_cache' Clear Cache
+                 li.dropdown-item
                    = link_to 'Logout', destroy_user_session_path, 'method' => 'delete'
           - else
             = link_to 'Login', user_session_path
