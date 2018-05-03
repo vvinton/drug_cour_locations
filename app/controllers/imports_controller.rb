@@ -10,16 +10,16 @@ class ImportsController < ApplicationController
           io: File.open(params[:import][:file].tempfile.path),
           content_type: params[:import][:content_type],
           filename: params[:import][:file].original_filename
-        )
+        ) unless @import_file.file.attached?
         SetupImportJob.perform_later(@import_file.id)
         flash[:notice] = "Successfuly uploaded. Import will begin momentarily."
       else
-        flash[:error]  = "There was a problem saving the import file. Please contact support."
+        flash[:danger]  = "There was a problem saving the import file. Please contact support."
       end
     rescue => e
       puts "#{e.inspect}"
       puts "#{e.backtrace}"
-      flash[:error]  = "There was an exception storing the import file. Please contact support."
+      flash[:danger]  = "There was an exception storing the import file. Please contact support."
     end
     redirect_to imports_path
   end
