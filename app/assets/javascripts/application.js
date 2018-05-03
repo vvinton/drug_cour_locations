@@ -12,8 +12,8 @@
 //
 //= require jquery
 //= require jquery_nested_form
-//= require bootstrap
+//= require popper
 //= require jquery_ujs
-//= require dataTables/jquery.dataTables
-//= require dataTables/extras/dataTables.responsive
+//= require d3
+//= require bootstrap-sprockets
 //= require_tree .

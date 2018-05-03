@@ -15,6 +15,9 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
+  # storage service amazon
+  config.active_storage.service = :amazon
+
   # Enable/disable caching. By default caching is disabled.
   if Rails.root.join('tmp/caching-dev.txt').exist?
     config.action_controller.perform_caching = true
@@ -44,6 +47,9 @@ Rails.application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+
+  # Web console in develoment mode should support all IPs
+  config.web_console.whitelisted_ips = '172.18.0.0/16'
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true

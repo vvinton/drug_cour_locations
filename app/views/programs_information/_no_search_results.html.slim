@@ -1,0 +1,12 @@
+.card.notification-card
+  .card-body.text-center
+    i.fa.fa-search.notification-icon
+    h4.notification-title No search results found
+    p.notification-help
+      | No matching results found for
+      span.the-query
+        |   #{@description.gsub('Showing courts matching', '').strip}
+      |  . Please try your query again.
+    p.notification-links
+    a href="#search-box" data-toggle="modal"
+      | Try your search with different parameters

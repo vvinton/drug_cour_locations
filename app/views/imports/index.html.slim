@@ -1,0 +1,16 @@
+
+.col-md-4.offset-md-4
+  .card.mt-5
+    .card-body
+      h3 Import information
+      p.alert.alert-danger
+        | This is a destructive process and will clear and rewrite the database.
+      p Upload MDB or Excel file file. This application supports "program information", "grant information", and "state coordinator" spreadsheets currently.
+      = simple_form_for Import.new do |f|
+        = f.file_field :file, label: false
+        br
+        br
+        = f.submit 'Import', class: 'btn btn-success btn-width'
+        br
+        br
+        = link_to 'Cancel', imports_path, class: 'btn btn-default btn-width'

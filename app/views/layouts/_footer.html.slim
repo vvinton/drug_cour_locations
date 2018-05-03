@@ -1,0 +1,27 @@
+
+.container-fluid
+  footer
+    .row
+      .col
+        .copyright-section
+          | Copyright 2018 American University. All rights reserved.
+      .col
+        .login-section
+          - if current_user
+            .dropdown
+               button.btn.btn-default.btn-sm.dropdown-toggle data-toggle='dropdown' type='button'
+                 | #{current_user.email}
+                 span.caret
+               .dropdown-menu
+                 li.dropdown-item
+                   a href='/' Home
+                 li.dropdown-item
+                   a href='/statistic' Statistics
+                 li.dropdown-item
+                   a href='/imports' Import
+                 li.dropdown-item
+                   a href='/clear_cache' Clear Cache
+                 li.dropdown-item
+                   = link_to 'Logout', destroy_user_session_path, 'method' => 'delete'
+          - else
+            = link_to 'Login', user_session_path

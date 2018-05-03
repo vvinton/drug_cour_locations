@@ -10,10 +10,57 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171116122755) do
+ActiveRecord::Schema.define(version: 2018_05_02_164123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "bja_grants", force: :cascade do |t|
+    t.integer "fiscal_year"
+    t.string "program_office"
+    t.string "state"
+    t.string "grantee"
+    t.string "solicitation_title"
+    t.string "award_number"
+    t.string "gms_award_status"
+    t.string "fmis2_award_status"
+    t.datetime "award_date"
+    t.datetime "project_period_start"
+    t.datetime "project_period_end"
+    t.string "grant_mgr_last"
+    t.string "grant_mgr_first"
+    t.string "project_title"
+    t.string "poc_name"
+    t.string "poc_email"
+    t.string "fpoc_name"
+    t.string "fpoc_email"
+    t.string "gms_fpoc_name"
+    t.string "gms_fpoc_email"
+    t.string "tribal"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "coordinator_informations", id: :serial, force: :cascade do |t|
     t.integer "program_information_id"
@@ -58,17 +105,17 @@ ActiveRecord::Schema.define(version: 20171116122755) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "judge_informaions", id: :serial, force: :cascade do |t|
+  create_table "judge_informations", id: :serial, force: :cascade do |t|
     t.integer "program_information_id"
     t.string "last_name"
-    t.string "firt_name"
+    t.string "first_name"
     t.string "email"
     t.string "title"
     t.string "phone"
     t.string "current_contact"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["program_information_id"], name: "index_judge_informaions_on_program_information_id"
+    t.index ["program_information_id"], name: "index_judge_informations_on_program_information_id"
   end
 
   create_table "jurisdiction_informations", id: :serial, force: :cascade do |t|
@@ -105,14 +152,10 @@ ActiveRecord::Schema.define(version: 20171116122755) do
     t.string "zip_code"
     t.string "phone_number"
     t.string "email"
-    t.string "website"
     t.string "notes"
     t.string "program_add_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "lat"
-    t.float "long"
-    t.jsonb "geodata"
     t.string "county"
   end
 
@@ -141,6 +184,13 @@ ActiveRecord::Schema.define(version: 20171116122755) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "settings", id: :serial, force: :cascade do |t|
+    t.string "var", null: false
+    t.text "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "state_coordinators", id: :serial, force: :cascade do |t|
     t.string "current_contact"
     t.string "last_name"
@@ -151,7 +201,6 @@ ActiveRecord::Schema.define(version: 20171116122755) do
     t.string "address"
     t.string "agency"
     t.string "zip"
-    t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "state"

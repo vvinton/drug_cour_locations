@@ -24,3 +24,5 @@
 # Ignore secrets
 /config/database.yml
 public/system/*
+
+.DS_Store

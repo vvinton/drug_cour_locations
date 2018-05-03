@@ -1,14 +1,12 @@
 class ProgramInformation < ApplicationRecord
   include ProgramInformationAggregations
-  has_many :judge_informaion
+  has_many :judge_information
   has_many :jurisdiction_information
   has_many :coordinator_information
   has_many :grant_information
   has_one :state_coordinator, foreign_key: 'state', primary_key: 'state'
 
   accepts_nested_attributes_for :coordinator_information
-
-  searchkick word_start: ['address'], merge_mappings: true, mappings: PROGRAM_MAPPING
 
   class << self
     def searchable_fields

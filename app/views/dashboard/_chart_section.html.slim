@@ -1,0 +1,17 @@
+.container-fluid.chart-section
+  .card
+    .card-body
+      h4 State and Program Type
+      table.table#bars-table
+        thead
+          th
+            a href="javascript:void(0)" data-sort="state" class="sort asc" State
+          th.bar-states.form-inline
+            .form-group
+              | Court Types:
+              select.select.form-control.filter-select
+          th
+            a href="javascript:void(0)" data-sort="total" Total
+        tbody
+      h5 Legend
+      #bar-legend.row
