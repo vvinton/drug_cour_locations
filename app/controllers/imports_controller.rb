@@ -16,6 +16,10 @@ class ImportsController < ApplicationController
       flash[:error]  = "There was a problem saving the import file. Please contact support."
     end
     redirect_to imports_path
+  rescue => e
+    puts "#{e.inspect}"
+    puts "#{e.backtrace}"
+    raise e
   end
 
   private
