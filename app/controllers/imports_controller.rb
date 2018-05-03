@@ -4,7 +4,7 @@ class ImportsController < ApplicationController
     begin
       @import_file = Import.new(import_params)
       @import_file.mdb_content_type = params[:import][:content_type]
-      @import_file.mdb_file_name = params[:import][:file].original_filename
+      @import_file.mdb_file_name    = params[:import][:file].original_filename
       if @import_file.save
         @import_file.file.attach(
           io: File.open(params[:import][:file].tempfile.path),
@@ -19,7 +19,7 @@ class ImportsController < ApplicationController
     rescue => e
       puts "#{e.inspect}"
       puts "#{e.backtrace}"
-      flash[:error]  = "There was an exception saving the import file. Please contact support."
+      flash[:error]  = "There was an exception storing the import file. Please contact support."
     end
     redirect_to imports_path
   end
