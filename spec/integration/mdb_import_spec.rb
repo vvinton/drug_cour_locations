@@ -5,33 +5,24 @@ RSpec.describe 'Import MDB import' do
   let(:content_type) { 'application/vnd.ms-access' }
   let(:headers) { "Content-Disposition: form-data; name=\"import[file]\"; filename=\"#{original_filename}\"\r\nContent-Type: #{content_type}\r\n" }
   let(:file_path) { File.expand_path('../../fixtures/files/mdb_db.mdb', __FILE__) }
-  let(:file_params) do
-    ActionDispatch::Http::UploadedFile.new(
-      tempfile: Tempfile.open(path: file_path),
-      content_type: content_type,
-      headers: headers,
-      original_filename: original_filename
-
+  let(:import) {
+    import = Import.create(
+        mdb_file_name: file_path,
+        mdb_content_type: content_type
     )
-  end
-  let(:import) do
-    import = Import.create(mdb_file_name: file_path,
-                          mdb_content_type: content_type,
-                          file: file_params)
+    import.file.attach(
+        io: File.open(file_path),
+        content_type: import.mdb_content_type,
+        filename: 'mdb_db.mdb'
+    )
     import
-  end
+  }
   let(:job) { MdbImportJob.new }
   let(:selector_job) { SetupImportJob.new }
   before do
     begin
       ActiveJob::Base.queue_adapter = :test
-      import.file.attach(
-        io: File.open(file_path),
-        content_type: import.mdb_content_type,
-        filename: 'mdb_db.mdb'
-      )
     rescue => e
-      binding.pry
       pp e.backtrace
       raise e
     end

@@ -46,7 +46,7 @@ class MdbImportJob < ApplicationJob
                                     website: row[:"Website"],
                                     notes: row[:"Notes"])
         if pi.save
-          pi.update_location!(geofinder)
+          pi.update_location!(@geofinder)
           @mapping[row[:"ID"]] = pi.id
           pi.save
         else
@@ -61,7 +61,7 @@ class MdbImportJob < ApplicationJob
     true
   end
 
-  def handle_state_coordinator_import
+  def handle_coordinator_information_import
     CoordinatorInformation.delete_all
     @database["Coordinator Information"].each do |row|
       begin
