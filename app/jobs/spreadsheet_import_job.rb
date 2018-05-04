@@ -84,18 +84,17 @@ class SpreadsheetImportJob < ApplicationJob
   end
 
   def get_spreadsheet
-    # why we need it??? I wrote it with to use any url of file or path from this app
-    # file = Tempfile.new(@record.file.filename.to_s)
-    # file.binmode
-    # file.write(@record.file.blob.download)
-    # file.flush
-    # Roo::Spreadsheet.open(file, extension: :xlsx)
-    file_path = @record.file.record.mdb_file_name
-    begin
-      Roo::Spreadsheet.open(file_path, extension: :xlsx)
-    rescue Zip::Error
-      Roo::Spreadsheet.open(file_path)
-    end
+    file = Tempfile.new(@record.file.filename.to_s)
+    file.binmode
+    file.write(@record.file.blob.download)
+    file.flush
+    Roo::Spreadsheet.open(file, extension: :xlsx)
+    # file_path = @record.file.record.mdb_file_name
+    # begin
+    #   Roo::Spreadsheet.open(file_path, extension: :xlsx)
+    # rescue Zip::Error
+    #   Roo::Spreadsheet.open(file_path)
+    # end
   end
 
   def handle_incorrect_spreadsheet

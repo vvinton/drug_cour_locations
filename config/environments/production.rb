@@ -88,4 +88,7 @@ Rails.application.configure do
   config.action_dispatch.default_headers = {
     'X-Frame-Options' => 'ALLOWALL'
   }
+
+  # storage service amazon
+  config.active_storage.service = :amazon
 end

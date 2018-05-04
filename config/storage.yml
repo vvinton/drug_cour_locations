@@ -9,7 +9,7 @@ test:
 
 amazon:
   service: S3
-  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
-  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] || 'AKIAJTSWYGNIMHAFEDOQ'%>
+  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] || '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' %>
   region: 'us-east-1'
   bucket: 'aujpomaps'

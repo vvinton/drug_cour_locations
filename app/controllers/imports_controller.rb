@@ -1,3 +1,4 @@
+require 'active_storage'
 class ImportsController < ApplicationController
 
   def create
