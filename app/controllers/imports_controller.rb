@@ -7,8 +7,6 @@ class ImportsController < ApplicationController
       @import_file.mdb_content_type = params[:import][:content_type]
       @import_file.mdb_file_name    = params[:import][:file].original_filename
       if @import_file.save
-        puts "Made it here"
-        puts "#{@import_file.file.attached?}"
         @import_file.file.attach(
           io: File.open(params[:import][:file].tempfile.path),
           content_type: params[:import][:content_type],
