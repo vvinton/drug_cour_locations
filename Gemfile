@@ -47,6 +47,7 @@ gem 'ledermann-rails-settings'
 gem 'rgb'
 gem 'bootstrap4-kaminari-views'
 gem 'roo'
+gem 'roo-xls'
 gem 'sidekiq'
 gem 'sidekiq-failures'
 gem "aws-sdk-s3", require: false

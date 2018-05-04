@@ -27,7 +27,9 @@ namespace :import do
 
   desc 'drop irrelevant data'
   task :drop_broken => :environment do
-    ProgramInformation.where(lat: nil).delete_all
+    if ProgramInformation.all.count > 0
+      ProgramInformation.where(lat: nil).delete_all
+    end
   end
 
   desc 'truncate data for reimport'
