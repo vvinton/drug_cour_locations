@@ -1,0 +1,21 @@
+.container-fluid.map-section
+  .relative
+    #us-map-legend
+    p#how-to-use
+      | Hover over a state to see detailed information about that state's Drug Treatment Courts
+    #us-map
+    #us-map-popup.hidden
+      .row
+        .col-5
+          h1.state
+        .col-7
+          p.description
+      .row
+        .col
+          h2 Courts by Type
+      .row
+        .col.col
+          ul.list-data
+      .row
+        .col.text-center.mt-5
+          = link_to 'Download', '/programs_information.csv', class: 'btn btn-primary', id: '#popup-download-link'

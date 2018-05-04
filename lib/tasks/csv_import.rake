@@ -1,23 +1,39 @@
 require 'csv'
 namespace :import do
 
-  desc 'recreate geodatum'
-  task :geodatum => :environment do
-    GeoDatum.delete_all
+  desc 'truncate data for reimport'
+  task :reindex => :environment do
+    SearchItem.reindex
+    ProgramInformation.reindex
+  end
+
+
+  desc 'recreate search locations'
+  task :search_locations => :environment do
     ProgramInformation.find_each do |pi|
-      if pi.lat && pi.long && pi.geodata && !pi.lat.nan? && !pi.long.nan?
-        GeoDatum.create_from_program_information(pi)
+      if pi.lat && pi.long && pi.geodata && !pi.lat.nan? && !pi.long.nan? && pi.zip_code
+        search_item = SearchItem.find_or_create_from_program_information(pi)
+        search_item_location = SearchItemLocation.find_or_create_location(search_item, pi) if search_item
       end
     end
+    puts "Reindexing SearchItem"
+    SearchItem.reindex
+  end
+
+  desc 'recreate geodatum'
+  task :geodatum => :environment do
+    RecreateGeodatumJob.new.perform
   end
 
   desc 'drop irrelevant data'
   task :drop_broken => :environment do
-    ProgramInformation.where(lat: nil).delete_all
+    if ProgramInformation.all.count > 0
+      ProgramInformation.where(lat: nil).delete_all
+    end
   end
 
   desc 'truncate data for reimport'
-  task :drop_everything => :environment do 
+  task :drop_everything => :environment do
     User.delete_all
     Role.delete_all
     SearchItem.delete_all

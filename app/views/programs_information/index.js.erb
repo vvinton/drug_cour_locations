@@ -1,6 +1,0 @@
-$('.state-filter').html('<%= escape_javascript(render 'filter_sidebar') %>')
-$('.table-striped').html('<%= escape_javascript(render 'locations_list') %>')
-$('.view-options').html('<%= escape_javascript(render 'view_options') %>')
-$('#csv-export-link').replaceWith('<%= escape_javascript(link_to_csv_export) %>')
-
-<%= render 'marker_locations.js' %>
