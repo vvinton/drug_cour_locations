@@ -1,0 +1,35 @@
+#search-box.modal tabindex="-1" role="dialog" aria-labelledby="search-box-label" aria-hidden="true"
+  .modal-dialog.modal-dialog-centered.modal-lg role="document"
+    .modal-content
+      = form_tag programs_information_index_path, method: 'get' do
+        .modal-header
+          h4.modal-title#search-box-label Search and Filter the Drug Treatment Court Database
+          button.close type="button" data-dismiss="modal" aria-label="Close"
+            span aria-hidden="true" &times;
+        .modal-body
+          .row
+            p.alert.alert-info
+              | Search and filter the database. Use the search to search for words in most of the fields of the database. And, you can filter by court types and states as well. Multiple selections are supported.
+          .row.modal-search-area.container
+            .col
+              .form-group
+                label for="srch-term" Search Term:
+                = text_field_tag :q, (params[:q] == '*' ? '' : params[:q] ), placeholder: 'Search', type: "search", class: 'form-control search', id: 'srch-term'
+          .row
+            .col
+              .form-group
+                label for="sel1"
+                  | Select Court Type(s):
+                select#sel1.form-control size="10" multiple="" name="program_type[]"
+                  - @metrics.dig(:totals_by_type).keys.sort.each do |program_type|
+                    option value=program_type  = program_type
+            .col
+               .form-group
+                  label for="sel1"
+                    | Select State(s):
+                  select#sel1.form-control size="10" multiple="" name="states[]"
+                    - Array(@metrics.dig(:counts).keys.sort).each do |state|
+                      option value=state = state
+        .modal-footer
+          = submit_tag 'Search', class: 'button btn btn-primary'
+          button.btn.btn-secondary type="button" data-dismiss="modal" Close

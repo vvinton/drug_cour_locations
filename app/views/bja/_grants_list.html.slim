@@ -1,0 +1,74 @@
+- if @results.length > 0
+  .row.table-top
+    .col
+      .actions
+    .col
+      .page-entries
+        ul.list-inline.text-right
+          li.list-inline-item
+            = link_to 'Reset filters', programs_information_index_path
+          li.list-inline-item
+            = page_entries_info @results, entry_name: 'grants'
+  .row
+    .col
+      table.table.table-striped#grants-list-table
+        thead
+          th title='Fiscal Year' Year
+          th Program Office
+          th Grantee
+          th title="Solicitation Title" Solicitation
+          th Award
+          th Start
+          th End
+          th Grant Manager
+          th Project Title
+          th POC
+          th FPOC
+          th GMS FPOC
+          th Tribal
+        tbody
+          - @results.each do |result|
+            tr id="bja_grant_#{result.id}"
+              td = result.fiscal_year
+              td = result.program_office
+              td = result.grantee
+              td = result.solicitation_title
+              td
+                .award_number
+                  | Award Number: #{result.award_number}
+                .gms_award_status
+                  | GMS Status: #{result.gms_award_status}
+                .fmis_award_status
+                  | FMIS2 Status: #{result.fmis2_award_status}
+              td = result.project_period_start
+              td = result.project_period_end
+              td
+                | #{result.grant_mgr_first} #{result.grant_mgr_last}
+              td = result.project_title
+              td
+                .poc_name
+                  | #{result.poc_name}
+                .poc_email
+                  | #{result.poc_email}
+              td
+                .fpoc_name
+                  | #{result.fpoc_name}
+                .fpoc_email
+                  | #{result.fpoc_email}
+              td
+                .gms_fpoc_name
+                  | #{result.gms_fpoc_name}
+                .gms_fpoc_email
+                  | #{result.gms_fpoc_email}
+              td = result.tribal
+
+      .row.pagination-area
+        .col
+          = paginate @results, theme: 'twitter-bootstrap-4'
+        .col.action-area
+          ul.list-inline.text-right
+            li.list-inline-item
+              = link_to "Download BJA Grant Data", '#', class: 'list-item btn btn-secondary'
+
+- else
+  h4 No results

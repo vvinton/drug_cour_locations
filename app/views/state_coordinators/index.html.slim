@@ -1,0 +1,29 @@
+
+
+table#state-coordinators-table.table.table-striped
+  thead
+    tr
+      th State
+      th Agency
+      th Contact
+      th Location
+      th Phone
+      th Email
+  tbody
+    - @all_state_coordinators.keys.each do |state|
+      - coordinator = @all_state_coordinators[state]
+      tr
+        td = coordinator.dig('state')
+        td = coordinator['agency']
+        td
+          .name
+            = "#{coordinator['first_name']} #{coordinator['last_name']}"
+          .title
+            = "#{coordinator['title']}"
+        td
+          .address
+            = coordinator['address']
+          .city-state-zip
+            = "#{coordinator['city']}, #{coordinator['state']}, #{coordinator['zip']}"
+        td = coordinator['phone']
+        td = coordinator['email']

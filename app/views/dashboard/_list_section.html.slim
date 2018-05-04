@@ -1,0 +1,29 @@
+.container-fluid
+  .row
+    .col-4
+      .list-count-card
+        .card-body
+          .icon
+            i.fa.fa-list-alt
+          .count
+            = link_to(ProgramInformation.count, programs_information_index_path)
+          .description
+            | Drug Treatment Court Programs in the United States
+    .col-4
+      .list-count-card
+        .card-body
+          .icon
+            i.fa.fa-dollar
+          .count
+            = link_to(BjaGrant.count, bja_path)
+          .description
+            | BJA Grants supporting Drug Treatment Courts
+    .col-4
+      .list-count-card
+        .card-body
+          .icon
+            i.fa.fa-users
+          .count
+            = link_to(StateCoordinator.count, state_coordinators_path)
+          .description
+            | State Coordinators providing assistance with Drug Treatments Courts
