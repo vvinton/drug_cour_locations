@@ -1,31 +1,32 @@
-var marker_locations = [
-  <% @all_results.each do |res|  %>
-    <% if res.lat && res.long  %>
-      [
-        <%= res.lat %>,
-        <%= res.long %>,
-        '<%=escape_javascript(render(partial: 'popup_text', locals: { res: res }))%>',
-        <%= res.zip_code %>
-      ],
-    <% end %>
-  <% end %>
-]
-
-var invisible_marker_locations = [
-  <% SearchItem.search('*', load: false).each do |si| %>
-      <% if si.lat && si.lng  %>
+  var marker_locations = [
+    <% @all_results.each do |res|  %>
+      <% if res.lat && res.long  %>
         [
-          <%= si.lat %>,
-          <%= si.lng %>,
-          <%= si.short_name %>
+          <%= res.lat %>,
+          <%= res.long %>,
+          '<%=escape_javascript( popup_text(res, @all_state_coordinators[res.state]))%>',
+          <%= res.zip_code %>
         ],
       <% end %>
+    <% end %>
+  ]
+
+  var invisible_marker_locations = [
+    <% SearchItem.search('*', load: false).each do |si| %>
+        <% if si.lat && si.lng  %>
+          [
+            <%= si.lat %>,
+            <%= si.lng %>,
+            <%= si.short_name %>
+          ],
+        <% end %>
+    <% end %>
+  ]
+
+  var render_center_user_location = false
+   <% if @center %>
+     render_center_user_location = true
+     var user_location = {}
+     user_location.lat = <%= @center[:lat] %>
+     user_location.lng = <%= @center[:lng] %>
   <% end %>
-]
-var render_center_user_location = false
- <% if @center %>
-   render_center_user_location = true
-   var user_location = {}
-   user_location.lat = <%= @center[:lat] %>
-   user_location.lng = <%= @center[:lng] %>
-<% end %>

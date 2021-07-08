@@ -9,6 +9,9 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  # to test if we are doing actual caching in production
+  config.action_controller.perform_caching = true
+
   # Show full error reports.
   config.consider_all_requests_local = true
 

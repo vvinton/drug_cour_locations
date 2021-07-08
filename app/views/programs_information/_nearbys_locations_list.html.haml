@@ -1,29 +1,27 @@
-%table.table.table-condensed
+%table.table.table-condensed{ :style => "margin-right: 5px;" }
   %thead
     %tr
+      %th.text-center{ :title => 'Website link' }
+        %i.fa.fa-globe
       %th State
       %th County
       %th Court Type
       %th Program Name
       %th Address
-      %th Coordinator Name
-      %th Contact Email
-      %th Contact Phone
-      %th Website
       - if current_user && current_user.role.name == 'admin'
         %th Edit
   %tbody
     - @results.each do |result|
       %tr
+        %td.text-center
+          - if result.website
+            = link_to result.website, target: '_blank' do
+              %i.fa.fa-globe.text-primary
         %td= result.state
         %td= result.county
         %td= result.program_type
         %td= result.program_name
         %td= result.address
-        %td= result.contact_name
-        %td= result.email
-        %td= result.phone_number
-        %td= result.website
         - if current_user && current_user.role.name == 'admin'
           %th
             = link_to 'edit', edit_programs_information_path(result.id)

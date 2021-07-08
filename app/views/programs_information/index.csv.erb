@@ -1,8 +1,40 @@
-<%= 
-  CSV.generate do |csv| 
-    csv << ['State','County','Court Type','Program Name','Address','Coordinator Name','Contact Email','Contact Phone', 'Website'] 
-    @all_results.each do |result|
-      csv << [result.state,result.county,result.program_type,result.program_name,result.address,result.contact_name,result.email,result.phone_number,result.website]
+<%=
+  CSV.generate do |csv|
+    csv << [ 'State',
+             'County',
+             'Court Name',
+             'Court Type',
+             'Program Name',
+             'Address',
+             'City',
+             'State',
+             'Zip',
+             'Latitude',
+             'Longitude',
+             'Website',
+             'State Coordinator First Name',
+             'State Coordinator Last Name',
+             'State Coordinator Title',
+             'State Coordinator Email',
+             'State Coordinator Phone' ]
+    @results.each do |result|
+      csv << [ clean_csv_field(result.state),
+               clean_csv_field(result.county),
+               clean_csv_field(result.court_name),
+               clean_csv_field(result.program_type),
+               clean_csv_field(result.program_name),
+               clean_csv_field(result.address),
+               clean_csv_field(result.city),
+               clean_csv_field(result.state),
+               clean_zip(result.zip_code),
+               clean_csv_field(result.lat),
+               clean_csv_field(result.long),
+               clean_csv_field(result.website),
+               @all_state_coordinators.dig(result.state, 'first_name'),
+               @all_state_coordinators.dig(result.state, 'last_name'),
+               @all_state_coordinators.dig(result.state, 'title'),
+               @all_state_coordinators.dig(result.state, 'email'),
+               clean_csv_phone(@all_state_coordinators.dig(result.state, 'phone')) ]
     end
-  end
+  end.html_safe
 %>

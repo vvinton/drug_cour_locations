@@ -1,0 +1,58 @@
+link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"
+table.table.table-condensed style="margin-right: 5px;"
+  thead
+    tr
+      th.text-center title="Website link"
+        i.fa.fa-globe
+      th State
+      th County
+      th Court Type
+      th Program Information
+      th State Coordinator
+      - if current_user && current_user.role.name == 'admin'
+        th Edit
+  tbody#myTable
+    - @results.each do |result|
+      tr id="program_information_#{result.id}"
+        td.text-center
+          - if result.website
+            = link_to result.website, target: '_blank' do
+              i.fa.fa-globe.text-primary
+        td = result.state
+        td = result.county
+        td = result.program_type
+        td
+          .program_name
+            = result.program_name
+          .program_address
+            = result.address
+          .program_city_state_zip
+            = city_state_zip(result)
+        td.state_coordinator
+          - state_coordinator = @state_coordinators[result.state]
+          .state_coordinator_name
+            = state_coordinator&.full_name
+          .state_coordinator_title
+            = state_coordinator&.title
+          .state_coordinator_email
+            - if state_coordinator&.email&.to_s&.length.to_i > 0
+              i.fa.fa-envelope
+              = " #{state_coordinator&.email}"
+          .state_coordinator_phone
+            - if state_coordinator&.phone&.to_s&.length.to_i > 0
+              i.fa.fa-phone
+              = state_coordinator&.phone
+        - if current_user && current_user.role.name == 'admin'
+          th
+            = link_to 'edit', edit_programs_information_path(result.id)
+.row.text-center
+  .col-md-12.download-options-area
+    ul.list-inline
+      li.list-inline-item = link_to_csv_export(text: 'Download filtered data to CSV', class: 'list-item')
+      li.list-inline-item = link_to_all_download(class: 'list-item')
+
+.row
+  .col-md-12.text-center
+    ul#myPager.pagination.pagination-large
+
+

@@ -1,0 +1,38 @@
+
+
+table#state-coordinators-table.table.table-striped.datatable
+  thead
+    tr
+      th Agency 
+      th State
+      th Contact
+      th Location
+      th Phone
+      th Email
+      th Website
+  tbody
+    - @coordinators.each do |coordinator|
+      - next if coordinator.current_contact.to_s.blank? || coordinator.current_contact.to_s == "0"
+      tr
+        td = coordinator.agency
+        td = coordinator.state
+        td
+          .name
+            = "#{coordinator.first_name} #{coordinator.last_name}"
+          .title
+            = "#{coordinator.title}"
+        td
+          .address
+            = coordinator.address
+          .city-state-zip
+            = "#{coordinator.city}, #{coordinator.state}, #{coordinator.zip}"
+        td = coordinator.phone
+        td = coordinator.email
+        td
+          - if coordinator.website.blank?
+            | Not available
+          - else
+            = coordinator.website
+
+javascript:
+  $('.datatable').DataTable({responsive: true});

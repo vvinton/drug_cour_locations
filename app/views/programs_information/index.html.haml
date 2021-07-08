@@ -3,11 +3,11 @@
   - if @query[:v].include?('Map')
     = render 'map.js'
 .row
-  .col-xs-2.col-sm-2.col-md-2.state-filter
+  .col-xs-3.col-sm-3.col-md-3.state-filter
     = render 'filter_sidebar'
-  .col-xs-10.col-sm-10.col-md-10
+  .col-xs-9.col-sm-9.col-md-9
     .row
-      = form_tag programs_information_index_path, method: 'get' do
+      = form_tag programs_information_index_path, method: 'get' do  
         - @query.merge(q: []).each do |section, conditions|
           - conditions.each do |cond|
             = hidden_field_tag "#{section}[]", cond
@@ -25,12 +25,15 @@
         .btn-group
           .dropdown.view-options
             = render 'view_options'
-        = link_to_csv_export
       %br
       %br
       .row
         - if @query[:v].include?('Map')
           #map
-    .row.table-striped
+      .row
+        - if @query[:v].include?('Map')
+          %p.text-small.maps-count-notification
+            For performance reasons, geographically-located counts are approximate. Please use the counts by type on the left hand sidebar for an accurate count.
+    .row.table-striped.locations-list-table-container
       - if @query[:v].include?('List')
-        = render 'locations_list'
+        = render 'locations_list', locals: {results: @results}

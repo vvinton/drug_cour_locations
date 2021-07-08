@@ -1,33 +1,56 @@
 class ProgramsInformationController < ApplicationController
   ActionController::Parameters.permit_all_parameters = true
-
-  before_filter :is_admin?, only: [:edit, :update]
-  before_filter :find_program_information, only: [:edit, :update]
+  before_action :is_admin?, only: %i[edit update]
+  before_action :find_program_information, only: %i[edit update]
 
   def index
-    compose_query
-    @results = ProgramInformation.search(
-      @search.to_s,
-      where: @conditions,
-      aggs: [:program_type, :state],
-      page: params[:page],
-      per_page: 10,
-      load: false
-    )
-    @all_results = ProgramInformation.search(@search.to_s, where: @conditions, load: false)
+     @results  = Search.get_search(params)
+    states  = @results.map(&:state).uniq
+    @state_coordinators = {}
+    StateCoordinator.where(state: states).each do |sc|
+      @state_coordinators[sc.state] = sc
+    end
+  end
+  def set_map_results
+    @all_results = ProgramInformation.search(@search.to_s,
+                                             where: @conditions,
+                                             fields: ProgramInformation.searchable_fields,
+                                             load: false, limit: 10_000)
+    @all_state_coordinators = {}
+    StateCoordinator.all.each do |sc|
+      @all_state_coordinators[sc.state] = sc.attributes.to_h
+    end
   end
 
   def statistic
-    compose_query
-    @results = ProgramInformation.search(
+    results = ProgramByStateCounts.metrics
+    @total = results[:total]
+    @counts = results[:counts]
+    @program_types = results[:program_types]
+    @states = results[:total].keys.sort
+    @all = results[:all].sort_by{ |k, v| k }.to_h
+  end
+
+  def regular_results_query
+    @results = ProgramInformation.includes(:state_coordinator).search(
       @search.to_s,
       where: @conditions,
+      fields: ProgramInformation.searchable_fields,
       aggs: [:program_type, :state],
       page: params[:page],
       per_page: 10,
-      load: false
+      load: true
     )
-    @all_results = ProgramInformation.search(@search.to_s, where: @conditions, load: false)
+  end
+
+  def csv_results_query
+    @results = ProgramInformation.includes(:state_coordinator).search(
+      @search.to_s,
+      where: @conditions,
+      limit: 10_000,
+      aggs: %i[program_type state],
+      load: true
+    )
   end
 
   def nearbys
@@ -71,8 +94,8 @@ class ProgramsInformationController < ApplicationController
       state_counts[(r.state || '')] += 1
       type_counts[(r.program_type || '')] +=1
     end
-    @filters["program_type"] = type_counts.map{|k,v| {"key" => k,"doc_count" => v} }
-    @filters["state"] = state_counts.map{|k,v| {"key" => k,"doc_count" => v} }
+    @filters["program_type"] = type_counts.map{ |k,v| {"key" => k,"doc_count" => v} }
+    @filters["state"] = state_counts.map{ |k,v| {"key" => k,"doc_count" => v} }
     structure
   end
 
@@ -86,12 +109,14 @@ class ProgramsInformationController < ApplicationController
 
   def compose_query
     @center = {lat: params[:lat].to_f, lng: params[:lng].to_f} if params[:lat] && params[:lng]
-
     @search = (params[:q].presence || "*").to_s
     @conditions = {}
-    @conditions[:state] = params[:s].uniq if params[:s].present?
+    @conditions[:state] = params[:s].uniq        if params[:s].present?
     @conditions[:program_type] = params[:t].uniq if params[:t].present?
-    @conditions[:zip_code] = params[:z].uniq if params[:z].present? && (!params[:v] || params[:v] && params[:v].include?('Map'))
+    params.delete(:z) if params[:z] == ['none']
+    if params[:z].present? && (!params[:v] || params[:v] && params[:v].include?('Map'))
+      @conditions[:zip_code] = ZipCodeParams.new(params).matching_zip_codes
+    end
 
     @query = {
       t: (@conditions[:program_type] || []),
@@ -101,5 +126,4 @@ class ProgramsInformationController < ApplicationController
       v: (params[:v] || ['Map', 'List'])
     }
   end
-
 end

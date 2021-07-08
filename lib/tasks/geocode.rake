@@ -1,26 +1,25 @@
-namespace :geocode do 
+namespace :geocode do
   desc 'add search items based on zip code of program informations'
   task encode_zip: :environment do
-    ProgramInformation.pluck(:zip_code).uniq.group_by{|zip| zip.to_i / 100 }.each do |name, zip_codes|
-      search_item = SearchItem.new(short_name: name.to_s, hint: 'zip_code')
-      geocode_info = []
-      zip_codes.each do |zip| 
-        ProgramInformation.where(zip_code: zip).each do |pi|
-          if pi.lat && pi.long
-            geocode_info << [pi.lat, pi.long] 
-            search_item.program_informations << pi
-          end
-        end
-      end
-      res = Geocoder::Calculations.geographic_center(
-        geocode_info
-      )
-      if !res[0].nan? && !res[1].nan? && search_item.short_name != '0'
-        search_item.lat = res[0]
-        search_item.lng = res[1]
-        search_item.full_name = zip_codes.join(', ')
-        search_item.save!
-      end
+    RecalculateZipMap.new.call
+  end
+
+  desc 'create a fixture for GeoDatum for the center of each state'
+  task state_center: :environment do
+    file = "#{Rails.root}/lib/csv/state_center.csv"
+    state_center = {}
+    CSV.foreach(file, headers: true) do |row|
+      state_center[row[0]] = {lat: row[1].to_f, lng: row[2].to_f}
     end
+    state_center['DC']                   = state_center['District of Columbia']
+    state_center['District Of Columbia'] = state_center['District of Columbia']
+    pp state_center
+  end
+
+  desc 'geocodes a location (pass city, state, zip into the full location)'
+  task :location, [:full_location] => :environment do |_task, args|
+    Geocoder.configure(:timeout => 30, api_key: 'AIzaSyCyqgWP9c3hM-sdIfmBWxZTzAWYqfJCQrA')
+    resp = Geocoder.search(args.full_location)
+    pp resp
   end
 end
